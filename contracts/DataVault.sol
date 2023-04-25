@@ -7,12 +7,15 @@ pragma solidity ^0.8.9;
 contract DataVault {
     // structure of file data
     struct FileStruct{
-        string name;
+        string fileName;
+        string fileHash;
     }
     
     // structure of Credential data
     struct Credential{
-        string name;
+        string website;
+        string usernameOrEmailOrPhone;
+        string password;
     }
 
     // event FileAddedByUser(string name,address indexed user);
