@@ -28,14 +28,15 @@ contract DataVault {
     mapping(address=>CredentialStruct[]) private _allCredentialsOfUser; //addressOfUser => credentials[]
 
 
+    // add data of file of user
     function addFileOfUser(FileStruct memory _fileData) external {
         _allFilesOfUser[msg.sender][userTotalFilesCount()] = _fileData; 
     }
 
+    // add credential of user
     function addCredentialOfUser(CredentialStruct memory _credentialData) external {
         _allCredentialsOfUser[msg.sender][userTotalCredentialCount()] = _credentialData; 
     }
-
 
     // get total files count that user added
     function userTotalFilesCount() internal view returns (uint256){
@@ -47,4 +48,19 @@ contract DataVault {
         return _allCredentialsOfUser[msg.sender].length;
     }
 
+    function getAllFilesOfUser() external view returns(FileStruct[] memory allFiles)  {
+        uint256 totalFiles = userTotalFilesCount();
+        allFiles = new FileStruct[](totalFiles);
+        for (uint i = 0; i < totalFiles; i++) {
+            allFiles[i] =  _allFilesOfUser[msg.sender][i];
+        }
+    }
+
+    function getAllCredentialsOfUser() external view returns(CredentialStruct[] memory allCreds)  {
+        uint256 totalCredentials = userTotalCredentialCount();
+        allCreds = new CredentialStruct[](totalCredentials);
+        for (uint i = 0; i < totalCredentials; i++) {
+            allCreds[i] =  _allCredentialsOfUser[msg.sender][i];
+        }
+    }
 }
