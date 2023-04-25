@@ -12,7 +12,7 @@ contract DataVault {
     }
     
     // structure of Credential data
-    struct Credential{
+    struct CredentialStruct{
         string website;
         string usernameOrEmailOrPhone;
         string password;
@@ -25,14 +25,14 @@ contract DataVault {
     mapping(address=>FileStruct[]) private _allFilesOfUser; // addressOfUser => files[]
 
     //  mapping of all credentials of user
-    mapping(address=>Credential[]) private _allCredentialsOfUser; //addressOfUser => credentials[]
+    mapping(address=>CredentialStruct[]) private _allCredentialsOfUser; //addressOfUser => credentials[]
 
 
     function addFileOfUser(FileStruct memory _fileData) external {
         _allFilesOfUser[msg.sender][userTotalFilesCount()] = _fileData; 
     }
 
-    function addCredentialOfUser(Credential memory _credentialData) external {
+    function addCredentialOfUser(CredentialStruct memory _credentialData) external {
         _allCredentialsOfUser[msg.sender][userTotalCredentialCount()] = _credentialData; 
     }
 
