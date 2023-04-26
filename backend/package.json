@@ -1,11 +1,11 @@
 {
   "name": "datavault",
   "version": "1.0.0",
-  "description": "",  
+  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start":"node index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +14,8 @@
     "@spheron/storage": "^1.0.13",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.22"
   }
 }

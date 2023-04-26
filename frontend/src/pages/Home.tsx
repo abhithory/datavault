@@ -1,9 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { upload } from "@spheron/browser-upload";
 
 
 
 export default function Home() {
+
+    interface FileType {
+        lastModified: number,
+        lastModifiedDate: string,
+        name: string,
+        size: number,
+        type: string,
+        webkitRelativePath: string
+    }
+
+
+    const [fileUploaded, setFileUploaded] = useState<File | null | FileType>({
+        lastModified: 0,
+        lastModifiedDate: "",
+        name: "",
+        size: 0,
+        type: "",
+        webkitRelativePath: ""
+    });
 
     // async function uploadFile(filePath:string, name:string) {
     //     console.log("uploading file");
@@ -39,16 +58,11 @@ export default function Home() {
 
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log('===============handleFormFile=====================');
         const _file: File = e.target.userfile.files[0];
-        console.log(_file);
-
         // here upload file on ipfs
-        const response = await fetch(`http://localhost:8000/api/v1/getuploadtoken`); // from step 1
+        const response = await fetch(`http://localhost:8000/api/v1/getuploadtoken`);
         const resJson = await response.json();
         const token = resJson.uploadToken;
-        // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXBsb3ltZW50SWQiOiI2NDQ4NDVlMDIwMjc3YTAwMTJlOTNiOTciLCJzaW5nbGVEZXBsb3ltZW50Ijp0cnVlLCJwYXlsb2FkU2l6ZSI6NTI0Mjg4MCwicGFyYWxsZWxVcGxvYWRDb3VudCI6NSwiaWF0IjoxNjgyNDU4MDgwLCJleHAiOjE2ODI0NTg2ODAsImlzcyI6Ind3dy5zcGhlcm9uLm5ldHdvcmsifQ.F2n0q4iyysHklirBjs2Vrz6bKNui5i8aZy--HBvb8TQ"
-        console.log(token);
 
         let currentlyUploaded = 0;
         const uploadResult = await upload([_file], {
@@ -59,27 +73,30 @@ export default function Home() {
         });
 
         console.log("uploadResult", uploadResult.protocolLink);
-        console.log('====================================');
+
+        // ------------- for uploading file in backend--------------
+        // const formData = new FormData()
+        // formData.append('userfile', _file)
+        // const responseUpload = await fetch(`http://localhost:8000/api/v1/uploadFileToIPFS`, { method: "POST", body: formData }); // from step 1
+        // const dataRes = await responseUpload.json();
+        // console.log(dataRes);
     }
 
-    function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-        console.log('============handleFileUpload========================');
-
-        let file: any = e.target.files && e.target.files[0]
-        console.log(file);
+    async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        let _file: File | null  = e.target.files && e.target.files[0]
+        setFileUploaded(_file)
 
         // let reader = new FileReader();
-
         // reader.onloadend = () => {
         //   console.log("url",reader.result);          
         // }
         // reader.readAsDataURL(file);
-
-
         // show basic details of file to user
         // name, size, type
         console.log('====================================');
     }
+
+
     return (
         <div>
             <button>Connect wallet</button>
@@ -88,6 +105,14 @@ export default function Home() {
             <h1>upload file</h1>
             <form onSubmit={handleFormFile}>
                 <input type="file" name='userfile' id='userfile' onChange={handleFileUpload} />
+                {fileUploaded && fileUploaded?.size > 0 && 
+                <>
+                <br />
+                <p>size: {fileUploaded?.size}</p>
+                <p>name: {fileUploaded?.name}</p>
+                <p>type: {fileUploaded?.type}</p>
+                </>
+                }
                 <br />
                 <button type='submit'>Upload file</button>
             </form>
