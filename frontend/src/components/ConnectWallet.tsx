@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {ethers} from "ethers";
-// const ethers = require("ethers")
+import {Contract, ethers} from "ethers";
+import { getDataVaultContract, getWeb3Provider } from '../helper/DataVaultSmartContract';
+import { Provider } from '@ethersproject/providers';
 
 
 export default function ConnectWallet() {
@@ -11,20 +12,26 @@ export default function ConnectWallet() {
 
     async function connectToWallet() {
         if (window.ethereum) {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const provider:Provider = getWeb3Provider(window.ethereum);
             // @ts-ignore: Unreachable code error
             const accounts = await provider.send("eth_requestAccounts", []);
             console.log(accounts);
-
             setWalletAddr(accounts[0]);
-
-
             const { name, chainId } = await provider.getNetwork();
             console.log(name, chainId);
+
+            callFunction();
             
         } else {
             setError("Please install metamask wallet")
         }
+    }
+
+    async function callFunction() {
+        const dataVault:Contract = getDataVaultContract();
+        const allFiles = await dataVault.getAllFilesOfUser();
+
+        console.log("allFiles",allFiles);        
     }
 
     return (
