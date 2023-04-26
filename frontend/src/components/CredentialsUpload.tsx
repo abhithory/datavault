@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { upload } from "@spheron/browser-upload";
 import { getDataVaultContract } from '../helper/DataVaultSmartContract';
 import { Contract } from 'ethers';
-
+import { web3ConnectionAtom } from '../atoms/web3Connection';
+import { useAtom } from 'jotai';
 
 
 export default function CredentialsUpload() {
 
+
+    const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
+
     const [uploadingCredential, setUploadingCredential] = useState<boolean>(false);
+    
 
 
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
@@ -55,7 +60,10 @@ export default function CredentialsUpload() {
                     <br />
                     <input disabled={uploadingCredential} type="text" placeholder='password' id='password' name='password' />                    
                     <br />
-                    <button disabled={uploadingCredential} type='submit'>Upload credentials</button>
+                    <button disabled={uploadingCredential || !web3ConnectionData.connected} type='submit'>Upload credentials</button>
+                    {!web3ConnectionData.connected &&
+                    <p>Please connect wallet first</p>
+                    }
                 </form>
         </div>
     )

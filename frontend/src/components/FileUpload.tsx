@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { upload } from "@spheron/browser-upload";
 import { getDataVaultContract } from '../helper/DataVaultSmartContract';
 import { Contract } from 'ethers';
+import { web3ConnectionAtom } from '../atoms/web3Connection';
+import { useAtom } from 'jotai';
+
+
 
 
 
 export default function FileUpload() {
 
     const [uploadingFile, setUploadingFile] = useState<boolean>(false);
-    const [uploadedFileLink, setUploadedFileLink] = useState<string>("")
+    const [uploadedFileLink, setUploadedFileLink] = useState<string>("");
+
+    const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
+
 
     interface FileType {
         lastModified: number,
@@ -110,7 +117,10 @@ export default function FileUpload() {
                         </>
                     }
                     <br />
-                    <button type='submit'>Upload file</button>
+                    <button type='submit' disabled={!web3ConnectionData.connected}>Upload file</button>
+                    {!web3ConnectionData.connected &&
+                    <p>Please connect wallet first</p>
+                    }
                 </form>
             }
 

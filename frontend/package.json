@@ -12,6 +12,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "ethers": "^5.7.2",
+    "jotai": "^2.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

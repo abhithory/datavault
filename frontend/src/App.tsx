@@ -1,11 +1,15 @@
 import React from 'react';
 import Home from './pages/Home';
+import { Provider } from "jotai";
+
 
 function App() {
   return (
-    <div>
-      <Home />
-    </div>
+    <Provider>
+      <div>
+        <Home />
+      </div>
+    </Provider>
   );
 }
 
