@@ -14,8 +14,8 @@ describe("Lock", function () {
 
   describe("Deployment", function () {
 
-    it("Should set the right owner", async function () {
-      // const { lock, owner } = await loadFixture(deployDataVaultFixture);
+    it("Should be deployed correctly", async function () {
+      const { dataVault } = await loadFixture(deployDataVaultFixture);
 
       // expect(await lock.owner()).to.equal(owner.address);
     });
@@ -26,14 +26,30 @@ describe("Lock", function () {
   describe("Adding Files", function () {
     describe("Validations", function () {
       it("Should add file in array", async function () {
-        
+        const { dataVault, owner } = await loadFixture(deployDataVaultFixture);
+        const _addFile = await dataVault.addFileOfUser({ fileName: "_name1", fileHash: "_hash1" });
+        const addedfile = await _addFile.wait();
+
+        const _addFile2 = await dataVault.addFileOfUser({ fileName: "_name2", fileHash: "_hash2" });
+        const addedfile2 = await _addFile2.wait();
+
+        const _allFiles = await dataVault.getAllFilesOfUser();
+        expect(_allFiles.length).to.equal(2);
       });
 
     });
 
     describe("Adding Credentials", function () {
       it("Should add credential in array", async function () {
-       
+        const { dataVault, owner } = await loadFixture(deployDataVaultFixture);
+        const _addCredentials = await dataVault.addCredentialOfUser({ website: "websiteeee", usernameOrEmailOrPhone: "emaillll", password: "passss" });
+        const addedCredentials = await _addCredentials.wait();
+
+        const _addCredentials2 = await dataVault.addCredentialOfUser({ website: "websiteeee2", usernameOrEmailOrPhone: "emaillll2", password: "passss2" });
+        const addedCredentials2 = await _addCredentials2.wait();
+        const _allCreds = await dataVault.getAllCredentialsOfUser();
+        expect(_allCreds.length).to.equal(2);
+
       });
     });
 

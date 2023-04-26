@@ -30,12 +30,12 @@ contract DataVault {
 
     // add data of file of user
     function addFileOfUser(FileStruct memory _fileData) external {
-        _allFilesOfUser[msg.sender][userTotalFilesCount()] = _fileData; 
+        _allFilesOfUser[msg.sender].push(_fileData); 
     }
 
     // add credential of user
     function addCredentialOfUser(CredentialStruct memory _credentialData) external {
-        _allCredentialsOfUser[msg.sender][userTotalCredentialCount()] = _credentialData; 
+        _allCredentialsOfUser[msg.sender].push(_credentialData); 
     }
 
     // get total files count that user added
