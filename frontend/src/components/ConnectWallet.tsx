@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Contract, ethers} from "ethers";
 import { getDataVaultContract, getWeb3Provider } from '../helper/DataVaultSmartContract';
-import { Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 
 
 export default function ConnectWallet() {
@@ -12,14 +12,13 @@ export default function ConnectWallet() {
 
     async function connectToWallet() {
         if (window.ethereum) {
-            const provider:Provider = getWeb3Provider(window.ethereum);
+            const provider:Web3Provider = getWeb3Provider();
             // @ts-ignore: Unreachable code error
             const accounts = await provider.send("eth_requestAccounts", []);
             console.log(accounts);
             setWalletAddr(accounts[0]);
             const { name, chainId } = await provider.getNetwork();
             console.log(name, chainId);
-
             callFunction();
             
         } else {

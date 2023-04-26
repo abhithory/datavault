@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { upload } from "@spheron/browser-upload";
+import { getDataVaultContract } from '../helper/DataVaultSmartContract';
+import { Contract } from 'ethers';
 
 
 
@@ -27,6 +29,8 @@ export default function FileUpload() {
 
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
+        uploadFileOnSmartContract("file name 001", "hash 001")
+        return
         setUploadingFile(true)
 
         try {
@@ -45,7 +49,7 @@ export default function FileUpload() {
             setUploadedFileLink(uploadResult.protocolLink);
         } catch (error) {
             console.log(error);
-            
+
         } finally {
             setUploadingFile(false)
         }
@@ -55,6 +59,24 @@ export default function FileUpload() {
         // const responseUpload = await fetch(`http://localhost:8000/api/v1/uploadFileToIPFS`, { method: "POST", body: formData }); // from step 1
         // const dataRes = await responseUpload.json();
         // console.log(dataRes);
+    }
+
+
+    async function uploadFileOnSmartContract(_name: string, _hash: string) {
+
+        try {
+            const dataVault: Contract = getDataVaultContract();
+            console.log("uploading file on smart contract");
+            const _addFileOfUser = await dataVault.addFileOfUser({ fileName: _name, fileHash: _hash });
+            console.log("1");
+            const addedfile = await _addFileOfUser.wait()
+            console.log(addedfile);
+        } catch (error: any) {
+            console.log(error);
+            console.log(error?.message);
+
+        }
+
     }
 
     async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -93,9 +115,9 @@ export default function FileUpload() {
             }
 
             {uploadedFileLink &&
-            <>
-            <a href={uploadedFileLink} target='_blank'>Uploaded file link</a>
-            </>
+                <>
+                    <a href={uploadedFileLink} target='_blank'>Uploaded file link</a>
+                </>
             }
         </div>
     )
