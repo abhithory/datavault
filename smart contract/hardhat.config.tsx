@@ -1,7 +1,8 @@
+import { HardhatUserConfig } from "hardhat/config";
 require("@nomicfoundation/hardhat-toolbox");
 
-/** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
+
+const config: HardhatUserConfig = {
   solidity: "0.8.9",
   networks:{
     shardeumSphinx:{
@@ -11,3 +12,5 @@ module.exports = {
     }
   }
 };
+
+export default config;
