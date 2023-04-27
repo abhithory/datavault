@@ -18,27 +18,16 @@ export default function ConnectWallet() {
             const accounts = await provider.send("eth_requestAccounts", []);
             setWeb3ConnectionData({connected:true,walletAddress:accounts[0]});
 
-            console.log(accounts);
-            const { name, chainId } = await provider.getNetwork();
-            console.log(name, chainId);
-            callFunction();
+            // console.log(accounts);
+            // const { name, chainId } = await provider.getNetwork();
+            // console.log(name, chainId);
             
         } else {
             setError("Please install metamask wallet")
         }
     }
 
-    async function callFunction() {
-        console.log("aaaaa");
-
-        try {
-            const dataVault:Contract = getDataVaultContract();
-            const allFiles = await dataVault.getAllFilesOfUser();
-            console.log("allFiles",allFiles);        
-        } catch (error:any) {
-            console.log("error",error?.message);
-        }
-    }
+   
 
     return (
         <div>
