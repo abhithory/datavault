@@ -6,13 +6,9 @@ import { web3ConnectionAtom } from '../atoms/web3Connection';
 import { useAtom } from 'jotai';
 
 
-
-
-
 export default function FileUpload() {
 
     const [uploadingFile, setUploadingFile] = useState<boolean>(false);
-    const [uploadedFileLink, setUploadedFileLink] = useState<string>("");
 
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
 
@@ -34,10 +30,13 @@ export default function FileUpload() {
         webkitRelativePath: ""
     });
 
+    const [fileName, setFileName] = useState<string>("")
+
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
+
         e.preventDefault();
-        uploadFileOnSmartContract("file name 001", "hash 001")
-        return
+
+        if (!fileUploaded) return
         setUploadingFile(true)
 
         try {
@@ -49,11 +48,10 @@ export default function FileUpload() {
             const uploadResult = await upload([_file], {
                 token, onChunkUploaded: (uploadedSize, totalSize) => {
                     currentlyUploaded += uploadedSize;
-                    console.log(`Uploaded ${currentlyUploaded} of ${totalSize} Bytes.`);
+                    // console.log(`Uploaded ${currentlyUploaded} of ${totalSize} Bytes.`);
                 },
             });
-            console.log("uploadResult", uploadResult.protocolLink);
-            setUploadedFileLink(uploadResult.protocolLink);
+            await uploadFileOnSmartContract(fileName, uploadResult.protocolLink)
         } catch (error) {
             console.log(error);
 
@@ -73,9 +71,7 @@ export default function FileUpload() {
 
         try {
             const dataVault: Contract = getDataVaultContract();
-            console.log("uploading file on smart contract");
             const _addFileOfUser = await dataVault.addFileOfUser({ fileName: _name, fileHash: _hash });
-            console.log("1");
             const addedfile = await _addFileOfUser.wait()
             console.log(addedfile);
         } catch (error: any) {
@@ -89,6 +85,7 @@ export default function FileUpload() {
     async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
         let _file: File | null = e.target.files && e.target.files[0]
         setFileUploaded(_file)
+        setFileName(_file?.name as string);
         // let reader = new FileReader();
         // reader.onloadend = () => {
         //   console.log("url",reader.result);          
@@ -107,6 +104,10 @@ export default function FileUpload() {
                 <h1>Uploading please wait</h1>
                 :
                 <form onSubmit={handleFormFile}>
+
+                    <input type="name" value={fileName} onChange={(e) => {
+                        setFileName(e.target.value);
+                    }} name='fileName' id='fileName' />
                     <input type="file" name='userfile' id='userfile' onChange={handleFileUpload} />
                     {fileUploaded && fileUploaded?.size > 0 &&
                         <>
@@ -117,18 +118,13 @@ export default function FileUpload() {
                         </>
                     }
                     <br />
-                    <button type='submit' disabled={!web3ConnectionData.connected}>Upload file</button>
+                    <button type='submit' disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} >Upload file</button>
                     {!web3ConnectionData.connected &&
-                    <p>Please connect wallet first</p>
+                        <p>Please connect wallet first</p>
                     }
                 </form>
             }
 
-            {uploadedFileLink &&
-                <>
-                    <a href={uploadedFileLink} target='_blank'>Uploaded file link</a>
-                </>
-            }
         </div>
     )
 }

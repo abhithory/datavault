@@ -58,7 +58,7 @@ export default function CredentialsUpload() {
                     <br />
                     <input disabled={uploadingCredential} type="text" placeholder='email or username or phone' id='emailMore' name='emailMore' />                    
                     <br />
-                    <input disabled={uploadingCredential} type="text" placeholder='password' id='password' name='password' />                    
+                    <input disabled={uploadingCredential} type="password" placeholder='password' id='password' name='password' />                    
                     <br />
                     <button disabled={uploadingCredential || !web3ConnectionData.connected} type='submit'>Upload credentials</button>
                     {!web3ConnectionData.connected &&
