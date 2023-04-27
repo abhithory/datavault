@@ -1,23 +1,18 @@
 import React from 'react';
 import { Provider } from "jotai";
-import Navigation from './components/Navigation';
 
-import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-  Routes
+  RouterProvider
 } from "react-router-dom";
-import FileUpload from './components/FileUpload';
 import CredentialsPage from './pages/CredentialsPage';
 import FilePage from './pages/FilePage';
+import Root from './components/Root/Root';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigation />,
+    element: <Root />,
     children: [
       {
         path: "/",
