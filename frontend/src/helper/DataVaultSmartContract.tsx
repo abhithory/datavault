@@ -3,7 +3,7 @@ import DataVaultABI from '../consts/DataVaultABI.json'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { ExternalProvider } from '@ethersproject/providers';
 
-export const dataVaultContractAddr = "0x4648A7025bb42DF0e3D2e26a3263e29321a03660";
+export const dataVaultContractAddr = "0xf320819f7D6F133835322Eb76488531E4be367E0";
 
 export function getWeb3Provider():Web3Provider{
     const provider = new ethers.providers.Web3Provider(window.ethereum as ExternalProvider);

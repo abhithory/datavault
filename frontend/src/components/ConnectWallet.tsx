@@ -29,10 +29,15 @@ export default function ConnectWallet() {
     }
 
     async function callFunction() {
-        const dataVault:Contract = getDataVaultContract();
-        const allFiles = await dataVault.getAllFilesOfUser();
+        console.log("aaaaa");
 
-        console.log("allFiles",allFiles);        
+        try {
+            const dataVault:Contract = getDataVaultContract();
+            const allFiles = await dataVault.getAllFilesOfUser();
+            console.log("allFiles",allFiles);        
+        } catch (error:any) {
+            console.log("error",error?.message);
+        }
     }
 
     return (

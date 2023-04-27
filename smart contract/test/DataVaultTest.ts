@@ -34,6 +34,8 @@ describe("Lock", function () {
         const addedfile2 = await _addFile2.wait();
 
         const _allFiles = await dataVault.getAllFilesOfUser();
+        console.log(_allFiles);
+        
         expect(_allFiles.length).to.equal(2);
       });
 
