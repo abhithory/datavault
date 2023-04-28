@@ -4,6 +4,7 @@ import { getDataVaultContract, getWeb3Provider } from '../helper/DataVaultSmartC
 import { Web3Provider } from '@ethersproject/providers';
 import { useAtom } from "jotai";
 import { web3ConnectionAtom, web3ConnectionInterface } from '../atoms/web3Connection';
+import { Button } from '@mantine/core';
 
 
 export default function ConnectWallet() {
@@ -31,10 +32,9 @@ export default function ConnectWallet() {
 
     return (
         <div>
-            <button onClick={connectToWallet}>Connect wallet</button>
-            {web3ConnectionData.connected &&
-            <p>address: {web3ConnectionData.walletAddress}</p>
-            }
+            <Button  variant="outline" color="red" onClick={connectToWallet}>{web3ConnectionData.connected ? "Connected" :  "Connect wallet"}</Button>
+            
+        
             {error !== "" &&
             <p>error: {error}</p>
             }

@@ -7,14 +7,9 @@ import ConnectWallet from '../ConnectWallet'
 export default function Navigation() {
     return (
         <nav>
+            <div className="navContent">
+            <h1>DataVault</h1>
             <ConnectWallet />
-            <div>
-                <Link to="/">
-                    <button>Files</button>
-                </Link>
-                <Link to="/credentials">
-                    <button>Credentials</button>
-                </Link>
             </div>
         </nav>
     )

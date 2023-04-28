@@ -1,8 +1,14 @@
 nav{
     width: 100vw;
-    height: 2rem;
+    height: 4rem;
     background-color: darkblue;
+    color: red;
+}
+
+
+nav > .navContent{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0 4rem;
 }
