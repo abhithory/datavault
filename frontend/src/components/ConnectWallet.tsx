@@ -32,7 +32,7 @@ export default function ConnectWallet() {
 
     return (
         <div>
-            <Button  variant="outline" color="red" onClick={connectToWallet}>{web3ConnectionData.connected ? "Connected" :  "Connect wallet"}</Button>
+            <Button color="customWhite" className='textPrimary' onClick={connectToWallet}>{web3ConnectionData.connected ? "Connected" :  "Connect wallet"}</Button>
             
         
             {error !== "" &&

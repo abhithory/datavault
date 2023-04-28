@@ -8,6 +8,7 @@ import {
 import CredentialsPage from './pages/CredentialsPage';
 import FilePage from './pages/FilePage';
 import Root from './components/Root/Root';
+import { MantineProvider } from '@mantine/core';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/credentials",
-        element: <CredentialsPage/>,
+        element: <CredentialsPage />,
       },
 
     ],
@@ -31,19 +32,35 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Provider>
-      {/* <Navigation /> */}
-      <div>
-        <RouterProvider router={router} />
-      </div>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          colors: {
+            // Add your color
+            customWhite:["#FFF","#FFF","#FFF","#FFF","#FFF","#FFF","#FFF","#FFF","#FFF","#FFF",],
+            customPrimary: ['#42047e','#42047e','#42047e','#42047e','#42047e','#42047e','#42047e','#42047e','#42047e','#42047e',],
+          },
+          primaryColor: "customPrimary"
 
-      {/* <Routes>
+    
+        }}
+      >
+
+        {/* <Navigation /> */}
+        <div>
+          <RouterProvider router={router} />
+        </div>
+
+        {/* <Routes>
         <Route path="/" element={<Navigation />}>
-          <Route index element={<Home />} />
-
-          <Route path="*" element={<h1>page not found</h1>} />
+        <Route index element={<Home />} />
+        
+        <Route path="*" element={<h1>page not found</h1>} />
         </Route>
       </Routes> */}
 
+      </MantineProvider>
     </Provider>
   );
 }

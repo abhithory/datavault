@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 
 export default function TabNavigation() {
     return (
-        <Tabs defaultValue="Files">
+        <Tabs defaultValue="Files"  >
             <Tabs.List style={{"alignItems":"center","justifyContent":"center"}}>
-                    <Link  to="/">
-                        <Tabs.Tab value="Files">Files</Tabs.Tab>
+                    <Link  to="/" >
+                        <Tabs.Tab  value="Files">Files</Tabs.Tab>
                     </Link>
                     <Link to="/credentials">
                         <Tabs.Tab value="Credentials">Credentials</Tabs.Tab>

@@ -52,8 +52,8 @@ export default function CredentialsUpload() {
 
 
     return (
-        <div>
-            <h1>Upload file</h1>
+        <>
+            <h1>Upload Credentials</h1>
             <form onSubmit={handleFormFile}>
 
                 <TextInput
@@ -81,6 +81,6 @@ export default function CredentialsUpload() {
                     <p>Please connect wallet first</p>
                 }
             </form>
-        </div>
+        </>
     )
 }

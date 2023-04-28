@@ -1,13 +1,14 @@
 nav{
     width: 100vw;
-    height: 4rem;
-    background-color: darkblue;
+    height: 6rem;
+    background-color: var(--primaryColor);
     color: white;
 }
 
 
 nav > .navContent{
     display: flex;
+    height: 100%;
     justify-content: space-between;
     align-items: center;
     margin: 0 4rem;

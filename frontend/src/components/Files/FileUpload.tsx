@@ -96,7 +96,7 @@ export default function FileUpload() {
 
 
     return (
-        <div>
+        <>
 
             <h1>Upload file</h1>
 
@@ -119,7 +119,6 @@ export default function FileUpload() {
                                 }}
                             />
                             <p>size: {fileUploaded?.size}</p>
-                            <p>name: {fileUploaded?.name}</p>
                             <p>type: {fileUploaded?.type}</p>
                         </>
                     }
@@ -134,6 +133,6 @@ export default function FileUpload() {
                 </>
             }
 
-        </div>
+        </>
     )
 }

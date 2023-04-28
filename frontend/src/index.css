@@ -1,8 +1,41 @@
+
+
 :root{
     margin: 0;
     padding: 0;
+    --backgroundColor:white;
+    --primaryColor: #42047e;
+    --secoundryColor:07f49e;
+    --extraColor:blue;
+    /* 941b85 */
+    /* 600028 */
+    /* 20005e */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
+body{
+    background-color: var(--backgroundColor);
+    font-family: 'Ubuntu', sans-serif;
 }
 
 a{
     text-decoration: none;
+}
+
+.textPrimary{
+    color: var(--primaryColor);
+}
+
+.borderPrimary{
+    border-color: var(--primaryColor);
+}
+
+.textWhite{
+    color: white;
+}
+
+
+.bgPrimary{
+    background-color: var(--primaryColor);
 }
