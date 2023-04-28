@@ -1,5 +1,5 @@
 import React from 'react'
-import { FileInterface } from './../../helper/Interfaces';
+import { FileInterface } from '../../helper/Interfaces';
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 
 export default function OneFileItem(file: FileInterface) {

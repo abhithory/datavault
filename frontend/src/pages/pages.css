@@ -1,0 +1,15 @@
+.uploadContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.itemContainer{
+    display: flex;
+    gap: .8rem;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2rem;
+    flex-wrap: wrap;
+}

@@ -1,12 +1,16 @@
 import React from 'react'
-import AllCredentials from '../components/AllCredentials'
-import CredentialsUpload from '../components/CredentialsUpload'
+import AllCredentials from '../components/Credentials/AllCredentials'
+import CredentialsUpload from '../components/Credentials/CredentialsUpload'
 
 export default function CredentialsPage() {
   return (
-    <>
-        <AllCredentials />
+    <div className='pageContainer'>
+      <div className="uploadContainer">
         <CredentialsUpload />
-    </>
+      </div>
+      <div>
+        <AllCredentials />
+      </div>
+    </div>
   )
 }

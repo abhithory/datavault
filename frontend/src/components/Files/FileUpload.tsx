@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { upload } from "@spheron/browser-upload";
-import { getDataVaultContract } from '../helper/DataVaultSmartContract';
+import { getDataVaultContract } from '../../helper/DataVaultSmartContract';
 import { Contract } from 'ethers';
-import { web3ConnectionAtom } from '../atoms/web3Connection';
+import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
 
 
