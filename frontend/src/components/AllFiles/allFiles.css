@@ -1,0 +1,8 @@
+.allFilesList{
+    display: flex;
+    gap: .8rem;
+    justify-content: start;
+    align-items: center;
+    margin: 0 2rem;
+    flex-wrap: wrap;
+}

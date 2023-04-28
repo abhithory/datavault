@@ -4,9 +4,9 @@ import CredentialsUpload from '../components/CredentialsUpload'
 
 export default function CredentialsPage() {
   return (
-    <div>
+    <>
         <AllCredentials />
         <CredentialsUpload />
-    </div>
+    </>
   )
 }
