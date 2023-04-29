@@ -28,6 +28,21 @@ export default function ConnectWallet() {
         }
     }
 
+    async function isConnected() {
+          const provider:Web3Provider = getWeb3Provider();
+          const addresses = await provider.listAccounts(); 
+          return addresses.length > 0
+     }
+
+     useEffect(()=>{
+        (async function(){
+            const _isconnected = await isConnected();
+
+            if (_isconnected) {
+                connectToWallet()
+            }
+        })()
+     },[])
    
 
     return (

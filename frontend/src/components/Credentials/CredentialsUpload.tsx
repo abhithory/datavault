@@ -67,7 +67,7 @@ export default function CredentialsUpload() {
                     withAsterisk
                     disabled={uploadingCredential} placeholder='email or username or phone' id='emailMore' name='emailMore'
                     type='text'
-                    label="Enter your website Email/Phone/Username"
+                    label="Enter your Email/Phone/Username"
                     required
                 />
 
