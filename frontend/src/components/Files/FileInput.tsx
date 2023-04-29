@@ -71,12 +71,11 @@ export function FileInput(props:FileInputInterface) {
 
           <Text ta="center" fw={700} fz="lg" mt="xl">
             <Dropzone.Accept>Drop files here</Dropzone.Accept>
-            <Dropzone.Reject>Pdf file less than 30mb</Dropzone.Reject>
-            <Dropzone.Idle>Upload resume</Dropzone.Idle>
+            {/* <Dropzone.Reject>Try to upload </Dropzone.Reject> */}
+            <Dropzone.Idle>Upload Any file</Dropzone.Idle>
           </Text>
           <Text ta="center" fz="sm" mt="xs" c="dimmed">
-            Drag&apos;n&apos;drop files here to upload. We can accept only <i>.pdf</i> files that
-            are less than 30mb in size.
+            Drag&apos;n&apos;drop files here to upload. We will first encrypt your files with your wallet and then we will upload them on IPFS.
           </Text>
         </div>
       </Dropzone>

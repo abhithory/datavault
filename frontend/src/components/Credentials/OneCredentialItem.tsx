@@ -1,11 +1,11 @@
 import React from 'react'
-import { CredentialInterface } from '../../helper/Interfaces'
+import { CredentialInterface, CredentialWithFunctionInterface } from '../../helper/Interfaces'
 
 import { Card, Image, Text, Badge, Button, Group, Chip } from '@mantine/core';
 import { IconPassword } from '@tabler/icons-react';
 
 
-export default function OneCredentialItem(credential: CredentialInterface) {
+export default function OneCredentialItem(credential: CredentialWithFunctionInterface) {
   return (
     <Card style={{ "width": "16rem" }} shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section ta="center" style={{ "marginTop": ".4rem" }}>
@@ -25,8 +25,8 @@ export default function OneCredentialItem(credential: CredentialInterface) {
         <Text weight={500}>{credential.password}</Text>
       </Group> */}
 
-      <Button variant="light" className='textWhite' fullWidth mt="md" radius="md">
-        Show details
+      <Button onClick={()=>credential.openCredentialModel(credential.index)} variant="light" className='textWhite' fullWidth mt="md" radius="md">
+        Show Credentials
       </Button>
     </Card>
   )

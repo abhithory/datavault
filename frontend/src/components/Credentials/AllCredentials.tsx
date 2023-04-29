@@ -4,8 +4,10 @@ import { useAtom } from 'jotai';
 import { getDataVaultContract } from '../../helper/DataVaultSmartContract';
 import { CredentialInterface } from '../../helper/Interfaces';
 import OneCredentialItem from './OneCredentialItem';
-import { Loader } from '@mantine/core';
+import { Loader, Modal } from '@mantine/core';
 import { refeshDataAtom } from '../../atoms/refreshData';
+import { useDisclosure } from '@mantine/hooks';
+import ShowCredentialsModel from './ShowCredentialsModel';
 
 export default function AllCredentials() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
@@ -13,15 +15,9 @@ export default function AllCredentials() {
     const [allCredentials, setAllCredentials] = useState<CredentialInterface[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [refreshData,] = useAtom(refeshDataAtom);
+    const [modelIndex, setModelIndex] = useState<number>(0);
 
-
-
-
-    // useEffect(() => {        
-    //     if (web3ConnectionData.connected) {
-    //         loadAllCredentials();
-    //     }
-    // }, [web3ConnectionData])
+    const [opened, { open, close }] = useDisclosure(false);
 
 
     useEffect(() => {
@@ -30,7 +26,7 @@ export default function AllCredentials() {
         }
     }, [refreshData.credentialsStatus || web3ConnectionData])
 
-    
+
     async function loadAllCredentials() {
         setIsLoading(true)
 
@@ -45,15 +41,25 @@ export default function AllCredentials() {
         }
     }
 
+    function openCredentialModel(n:number){
+        console.log(n);
+        setModelIndex(n)
+        open()
+    }
+
     return (
         <div>
+            <Modal size="xl" ta="center" opened={opened} onClose={close} title="Uploading Process" centered>
+                <ShowCredentialsModel website={allCredentials[modelIndex].website} usernameOrEmailOrPhone={allCredentials[modelIndex].usernameOrEmailOrPhone} password={allCredentials[modelIndex].password}   />
+            </Modal>
+
             <h2>All Credentials of User</h2>
 
             <div className="itemContainer">
                 {isLoading ?
                     <Loader />
                     :
-                    allCredentials && allCredentials.map((file, key) => <OneCredentialItem key={key} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)
+                    allCredentials && allCredentials.map((file, key) => <OneCredentialItem key={key} index={key} openCredentialModel={openCredentialModel} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)
                 }
 
             </div>
