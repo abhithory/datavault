@@ -5,9 +5,11 @@ import { getDataVaultContract } from '../../helper/DataVaultSmartContract';
 import { FileInterface } from '../../helper/Interfaces';
 import OneFileItem from './OneFileItem';
 import { Loader } from '@mantine/core';
+import { refeshDataAtom } from '../../atoms/refreshData';
 
 export default function AllFiles() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
+    const [refreshData,] = useAtom(refeshDataAtom);
 
     const [allFiles, setAllFiles] = useState<FileInterface[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -16,7 +18,7 @@ export default function AllFiles() {
         if (web3ConnectionData.connected) {
             loadAllFiles();
         }
-    }, [web3ConnectionData])
+    }, [web3ConnectionData || refreshData.fileStatus])
 
     async function loadAllFiles() {
         setIsLoading(true)

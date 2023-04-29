@@ -9,14 +9,14 @@ import { Modal, Group, Box, Button, LoadingOverlay, TextInput } from '@mantine/c
 import { IconDatabase } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { FileUploadProcessModel } from './FileUploadProcessModel';
+import { refeshDataAtom } from '../../atoms/refreshData';
 
 export default function FileUpload() {
 
     const [uploadingFile, setUploadingFile] = useState<boolean>(false);
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
     const [opened, { open, close }] = useDisclosure(false);
-
-
+    const [refreshData,setRefreshData] = useAtom(refeshDataAtom);
 
     interface FileType {
         lastModified: number,
@@ -76,6 +76,7 @@ export default function FileUpload() {
             const dataVault: Contract = getDataVaultContract();
             const _addFileOfUser = await dataVault.addFileOfUser({ fileName: _name, fileHash: _hash });
             const addedfile = await _addFileOfUser.wait()
+            setRefreshData({...refreshData,fileStatus:!refreshData.fileStatus})
             console.log(addedfile);
         } catch (error: any) {
             console.log(error);

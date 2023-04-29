@@ -8,12 +8,16 @@ import { Box, Button, LoadingOverlay, Modal, TextInput } from '@mantine/core';
 import { IconDatabase } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { CredentialsUploadProcessModel } from './CredentialsUploadProcessModel';
+import { refeshDataAtom } from '../../atoms/refreshData';
 
 
 export default function CredentialsUpload() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
     const [uploadingCredential, setUploadingCredential] = useState<boolean>(false);
     const [opened, { open, close }] = useDisclosure(false);
+
+    const [refreshData,setRefreshData] = useAtom(refeshDataAtom);
+
 
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -33,11 +37,11 @@ export default function CredentialsUpload() {
         open()
         try {
             const dataVault: Contract = getDataVaultContract();
-            console.log("uploading credentials on smart contract");
             const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website, usernameOrEmailOrPhone: usernameEmail, password });
-            console.log("1");
             const addedfile = await _addCredentialOfUser.wait()
             console.log(addedfile);
+            setRefreshData({...refreshData,credentialsStatus:!refreshData.credentialsStatus,})
+
         } catch (error: any) {
             console.log(error);
             console.log(error?.message);

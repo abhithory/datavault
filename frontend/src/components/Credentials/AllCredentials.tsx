@@ -5,12 +5,15 @@ import { getDataVaultContract } from '../../helper/DataVaultSmartContract';
 import { CredentialInterface } from '../../helper/Interfaces';
 import OneCredentialItem from './OneCredentialItem';
 import { Loader } from '@mantine/core';
+import { refeshDataAtom } from '../../atoms/refreshData';
 
 export default function AllCredentials() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
 
     const [allCredentials, setAllCredentials] = useState<CredentialInterface[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [refreshData,] = useAtom(refeshDataAtom);
+
 
 
 
@@ -25,7 +28,9 @@ export default function AllCredentials() {
         if (web3ConnectionData.connected) {
             loadAllCredentials();
         }
-    }, [])
+    }, [refreshData.credentialsStatus || web3ConnectionData])
+
+    
     async function loadAllCredentials() {
         setIsLoading(true)
 
