@@ -55,25 +55,31 @@ export default function CredentialsUpload() {
     return (
         <>
             <h1>Upload Credentials</h1>
-            <form onSubmit={handleFormFile}>
+            <form onSubmit={handleFormFile} style={{width:"22rem"}}>
                 <TextInput
+                    withAsterisk
                     disabled={uploadingCredential} placeholder='website' id='website' name='website'
                     type='text'
                     label="Enter your website url"
+                    required
                 />
                 <TextInput
+                    withAsterisk
                     disabled={uploadingCredential} placeholder='email or username or phone' id='emailMore' name='emailMore'
                     type='text'
                     label="Enter your website Email/Phone/Username"
+                    required
                 />
 
                 <TextInput
+                    withAsterisk
+                    required
                     disabled={uploadingCredential} placeholder='password' id='website' name='website'
                     type='password'
                     label="Enter your password"
                 />
 
-                <Button fullWidth mt="lg" leftIcon={<IconDatabase />}  disabled={uploadingCredential || !web3ConnectionData.connected} type='submit' variant="outline" >
+                <Button fullWidth mt="lg" leftIcon={<IconDatabase />} disabled={uploadingCredential || !web3ConnectionData.connected} type='submit' variant="outline" >
                     Upload Credentials
                 </Button>
 
