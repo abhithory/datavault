@@ -4,11 +4,14 @@ import { useAtom } from 'jotai';
 import { getDataVaultContract } from '../../helper/DataVaultSmartContract';
 import { CredentialInterface } from '../../helper/Interfaces';
 import OneCredentialItem from './OneCredentialItem';
+import { Loader } from '@mantine/core';
 
 export default function AllCredentials() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
 
     const [allCredentials, setAllCredentials] = useState<CredentialInterface[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
 
 
     // useEffect(() => {        
@@ -24,12 +27,16 @@ export default function AllCredentials() {
         }
     }, [])
     async function loadAllCredentials() {
+        setIsLoading(true)
+
         try {
             const dataVault = getDataVaultContract();
             const allCredentials = await dataVault.getAllCredentialsOfUser();
             setAllCredentials(allCredentials);
         } catch (error: any) {
             console.log("error", error?.message);
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -38,7 +45,12 @@ export default function AllCredentials() {
             <h2>All Credentials of User</h2>
 
             <div className="itemContainer">
-                {allCredentials && allCredentials.map((file, key) =>  <OneCredentialItem key={key} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)}
+                {isLoading ?
+                    <Loader />
+                    :
+                    allCredentials && allCredentials.map((file, key) => <OneCredentialItem key={key} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)
+                }
+
             </div>
         </div>
     )

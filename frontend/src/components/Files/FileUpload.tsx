@@ -5,15 +5,17 @@ import { Contract } from 'ethers';
 import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
 import { FileInput } from './FileInput';
-import { Button, TextInput } from '@mantine/core';
+import { Modal, Group, Box, Button, LoadingOverlay, TextInput } from '@mantine/core';
 import { IconDatabase } from '@tabler/icons-react';
-
+import { useDisclosure } from '@mantine/hooks';
+import { FileUploadProcessModel } from './FileUploadProcessModel';
 
 export default function FileUpload() {
 
     const [uploadingFile, setUploadingFile] = useState<boolean>(false);
-
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
+    const [opened, { open, close }] = useDisclosure(false);
+
 
 
     interface FileType {
@@ -37,6 +39,7 @@ export default function FileUpload() {
 
     async function handleUploadFile() {
         if (!fileUploaded) return
+        open()
         setUploadingFile(true)
 
         try {
@@ -99,40 +102,39 @@ export default function FileUpload() {
     return (
         <>
 
+            <Modal size="xl" ta="center" opened={opened} onClose={close} title="Uploading Process" centered>
+                <FileUploadProcessModel />
+            </Modal>
+
             <h1>Upload file</h1>
 
             {/* // TODO: file upload process */}
 
-            {uploadingFile ?
-                <h1>Uploading please wait</h1>
-                :
-                <>
-                    <FileInput handleFileUpload={handleFileUpload} />
-                    {fileUploaded && fileUploaded?.size > 0 &&
-                        <>
-                            <TextInput
-                                type='text'
-                                placeholder="Your name"
-                                label="File Name"
-                                withAsterisk
-                                value={fileName} onChange={(e) => {
-                                    setFileName(e.target.value);
-                                }}
-                            />
-                            <p>size: {fileUploaded?.size}</p>
-                            <p>type: {fileUploaded?.type}</p>
-                        </>
-                    }
-                    <br />
-                    <Button rightIcon={<IconDatabase />} onClick={handleUploadFile} disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} variant="outline">
-                        Upload File
-                    </Button>
+                <FileInput handleFileUpload={handleFileUpload} />
+                {fileUploaded && fileUploaded?.size > 0 &&
+                    <>
+                        <TextInput
+                            type='text'
+                            placeholder="Your name"
+                            label="File Name"
+                            withAsterisk
+                            disabled={uploadingFile}
+                            value={fileName} onChange={(e) => {
+                                setFileName(e.target.value);
+                            }}
+                        />
+                        <p>size: {fileUploaded?.size}</p>
+                        <p>type: {fileUploaded?.type}</p>
+                    </>
+                }
+                <br />
+                <Button loading={uploadingFile} rightIcon={<IconDatabase />} onClick={handleUploadFile} disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} variant="outline">
+                    Upload File
+                </Button>
 
-                    {!web3ConnectionData.connected &&
-                        <p>Please connect wallet first</p>
-                    }
-                </>
-            }
+                {!web3ConnectionData.connected &&
+                    <p>Please connect wallet first</p>
+                }
 
         </>
     )
