@@ -35,7 +35,7 @@ export default function AllCredentials() {
 
     return (
         <div>
-            <h1>All Credentials of User</h1>
+            <h2>All Credentials of User</h2>
 
             <div className="itemContainer">
                 {allCredentials && allCredentials.map((file, key) =>  <OneCredentialItem key={key} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)}

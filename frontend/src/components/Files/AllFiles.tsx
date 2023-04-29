@@ -29,7 +29,7 @@ export default function AllFiles() {
 
     return (
         <div>
-            <h1>All Files of User</h1>
+            <h2>All Files of User</h2>
             <div className="itemContainer">
                 {allFiles && allFiles.map((file, key) => <OneFileItem key={key} fileName={file.fileName} fileHash={file.fileHash} />)}
             </div>
