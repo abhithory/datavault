@@ -5,6 +5,7 @@ import { Contract } from 'ethers';
 import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
 import { Button, TextInput } from '@mantine/core';
+import { IconDatabase } from '@tabler/icons-react';
 
 
 export default function CredentialsUpload() {
@@ -55,7 +56,6 @@ export default function CredentialsUpload() {
         <>
             <h1>Upload Credentials</h1>
             <form onSubmit={handleFormFile}>
-
                 <TextInput
                     disabled={uploadingCredential} placeholder='website' id='website' name='website'
                     type='text'
@@ -73,7 +73,7 @@ export default function CredentialsUpload() {
                     label="Enter your password"
                 />
 
-                <Button disabled={uploadingCredential || !web3ConnectionData.connected} type='submit' variant="outline" >
+                <Button fullWidth mt="lg" leftIcon={<IconDatabase />}  disabled={uploadingCredential || !web3ConnectionData.connected} type='submit' variant="outline" >
                     Upload Credentials
                 </Button>
 

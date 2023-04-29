@@ -6,6 +6,7 @@ import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
 import { FileInput } from './FileInput';
 import { Button, TextInput } from '@mantine/core';
+import { IconDatabase } from '@tabler/icons-react';
 
 
 export default function FileUpload() {
@@ -123,7 +124,7 @@ export default function FileUpload() {
                         </>
                     }
                     <br />
-                    <Button onClick={handleUploadFile} disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} variant="outline">
+                    <Button rightIcon={<IconDatabase />} onClick={handleUploadFile} disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} variant="outline">
                         Upload File
                     </Button>
 
