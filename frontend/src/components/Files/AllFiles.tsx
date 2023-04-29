@@ -41,7 +41,7 @@ export default function AllFiles() {
                 {isLoading ?
                     <Loader />
                     :
-                    allFiles && allFiles.map((file, key) => <OneFileItem key={key} fileName={file.fileName} fileHash={file.fileHash} />)
+                    allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} fileName={file.fileName} fileHash={file.fileHash}  />) : <h1>You Haven't uploaded any file yet</h1>
                 }
             </div>
         </div>

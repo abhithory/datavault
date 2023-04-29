@@ -16,7 +16,8 @@ export default function FileUpload() {
     const [uploadingFile, setUploadingFile] = useState<boolean>(false);
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
     const [opened, { open, close }] = useDisclosure(false);
-    const [refreshData,setRefreshData] = useAtom(refeshDataAtom);
+    const [refreshData, setRefreshData] = useAtom(refeshDataAtom);
+    const [fileName, setFileName] = useState<string>("")
 
     interface FileType {
         lastModified: number,
@@ -35,15 +36,20 @@ export default function FileUpload() {
         webkitRelativePath: ""
     });
 
-    const [fileName, setFileName] = useState<string>("")
 
     async function handleUploadFile() {
         if (!fileUploaded) return
         open()
         setUploadingFile(true)
 
+        const _nospaceNameFile = fileName.replaceAll(" ", "-") + "." + fileUploaded.name.split(".").at(-1);
+        setFileName(_nospaceNameFile);
+
+        console.log(_nospaceNameFile);
+        
+
         try {
-            const _file: File | FileType = fileUploaded;
+            const _file: File | FileType = { ...fileUploaded, name: _nospaceNameFile };
             const response = await fetch(`http://localhost:8000/api/v1/getuploadtoken`);
             const resJson = await response.json();
             const token = resJson.uploadToken;
@@ -76,7 +82,7 @@ export default function FileUpload() {
             const dataVault: Contract = getDataVaultContract();
             const _addFileOfUser = await dataVault.addFileOfUser({ fileName: _name, fileHash: _hash });
             const addedfile = await _addFileOfUser.wait()
-            setRefreshData({...refreshData,fileStatus:!refreshData.fileStatus})
+            setRefreshData({ ...refreshData, fileStatus: !refreshData.fileStatus })
             console.log(addedfile);
         } catch (error: any) {
             console.log(error);
@@ -88,8 +94,8 @@ export default function FileUpload() {
 
     async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
         let _file: File | null = e.target.files && e.target.files[0]
-        setFileUploaded(_file)
-        setFileName(_file?.name as string);
+        setFileUploaded(_file)        
+        setFileName(_file?.name?.split(".").slice(0,-1).join(".") as string);
         // let reader = new FileReader();
         // reader.onloadend = () => {
         //   console.log("url",reader.result);          
@@ -111,31 +117,31 @@ export default function FileUpload() {
 
             {/* // TODO: file upload process */}
 
-                <FileInput handleFileUpload={handleFileUpload} />
-                {fileUploaded && fileUploaded?.size > 0 &&
-                    <>
-                        <TextInput
-                            type='text'
-                            placeholder="Your name"
-                            label="File Name"
-                            withAsterisk
-                            disabled={uploadingFile}
-                            value={fileName} onChange={(e) => {
-                                setFileName(e.target.value);
-                            }}
-                        />
-                        <p>size: {fileUploaded?.size}</p>
-                        <p>type: {fileUploaded?.type}</p>
-                    </>
-                }
-                <br />
-                <Button loading={uploadingFile} rightIcon={<IconDatabase />} onClick={handleUploadFile} disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} variant="outline">
-                    Upload File
-                </Button>
+            <FileInput handleFileUpload={handleFileUpload} />
+            {fileUploaded && fileUploaded?.size > 0 &&
+                <>
+                    <TextInput
+                        type='text'
+                        placeholder="Your name"
+                        label="File Name"
+                        withAsterisk
+                        disabled={uploadingFile}
+                        value={fileName} onChange={(e) => {
+                            setFileName(e.target.value);
+                        }}
+                    />
+                    <p>size: {fileUploaded?.size}</p>
+                    <p>type: {fileUploaded?.type}</p>
+                </>
+            }
+            <br />
+            <Button loading={uploadingFile} rightIcon={<IconDatabase />} onClick={handleUploadFile} disabled={!web3ConnectionData.connected || !Boolean(fileUploaded?.size)} variant="outline">
+                Upload File
+            </Button>
 
-                {!web3ConnectionData.connected &&
-                    <p>Please connect wallet first</p>
-                }
+            {!web3ConnectionData.connected &&
+                <p>Please connect wallet first</p>
+            }
 
         </>
     )
