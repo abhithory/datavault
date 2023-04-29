@@ -12,7 +12,7 @@ export default function OneCredentialItem(credential: CredentialWithFunctionInte
         <IconPassword className='textPrimary' size="4rem" />
       </Card.Section>
       <Group position="center">
-        <Badge color="customPrimary" className='textWhite' size="lg" variant="light">
+        <Badge color="violet" size="lg" variant="light">
           {credential.website}
         </Badge>
       </Group>

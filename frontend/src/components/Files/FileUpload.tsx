@@ -5,7 +5,7 @@ import { Contract } from 'ethers';
 import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
 import { FileInput } from './FileInput';
-import { Modal, Group, Box, Button, LoadingOverlay, TextInput } from '@mantine/core';
+import { Modal, Group, Box, Button, LoadingOverlay, TextInput, Badge } from '@mantine/core';
 import { IconDatabase } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { FileUploadProcessModel } from './FileUploadProcessModel';
@@ -106,6 +106,11 @@ export default function FileUpload() {
     }
 
 
+    function convertInMb(inByte:number): string{
+        return (inByte/1000).toFixed(3) + " KB"
+    }
+
+
     return (
         <>
 
@@ -130,8 +135,7 @@ export default function FileUpload() {
                             setFileName(e.target.value);
                         }}
                     />
-                    <p>size: {fileUploaded?.size}</p>
-                    <p>type: {fileUploaded?.type}</p>
+                    <Badge mt="sm" radius="sm" color='violet'>Size: {convertInMb(fileUploaded?.size)}</Badge>
                 </>
             }
             <br />

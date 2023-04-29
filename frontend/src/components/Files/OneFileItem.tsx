@@ -13,9 +13,10 @@ export default function OneFileItem(file: FileInterface) {
       <Group >
         <Text lineClamp={1}>{file.fileName}</Text>
       </Group>
-      <Badge color="green" variant="light">
+      <Badge color="violet" variant="light">
       20 March, 2023
       </Badge>
+     
 
       {/* <Text size="sm" color="dimmed">
         With Fjord Tours you can explore more of the magical fjord landscapes with tours and
