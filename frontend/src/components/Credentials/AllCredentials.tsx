@@ -49,8 +49,8 @@ export default function AllCredentials() {
 
     return (
         <div>
-            <Modal size="xl" ta="center" opened={opened} onClose={close} title="Uploading Process" centered>
-                <ShowCredentialsModel website={allCredentials[modelIndex].website} usernameOrEmailOrPhone={allCredentials[modelIndex].usernameOrEmailOrPhone} password={allCredentials[modelIndex].password}   />
+            <Modal size="md" padding="xl" ta="center" opened={opened} onClose={close} title="Your Credentials" centered>
+                <ShowCredentialsModel website={allCredentials[modelIndex]?.website || ""} usernameOrEmailOrPhone={allCredentials[modelIndex]?.usernameOrEmailOrPhone || ""} password={allCredentials[modelIndex]?.password || ""}   />
             </Modal>
 
             <h2>All Credentials of User</h2>
@@ -59,7 +59,7 @@ export default function AllCredentials() {
                 {isLoading ?
                     <Loader />
                     :
-                    allCredentials && allCredentials.map((file, key) => <OneCredentialItem key={key} index={key} openCredentialModel={openCredentialModel} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)
+                    allCredentials.map((file, key) => <OneCredentialItem key={key} index={key} openCredentialModel={openCredentialModel} website={file.website} usernameOrEmailOrPhone={file.usernameOrEmailOrPhone} password={file.password} />)
                 }
 
             </div>

@@ -4,7 +4,7 @@ import { getDataVaultContract } from '../../helper/DataVaultSmartContract';
 import { Contract } from 'ethers';
 import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
-import { Box, Button, LoadingOverlay, Modal, TextInput } from '@mantine/core';
+import { Box, Button, LoadingOverlay, Modal, PasswordInput, TextInput } from '@mantine/core';
 import { IconDatabase } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { CredentialsUploadProcessModel } from './CredentialsUploadProcessModel';
@@ -15,8 +15,10 @@ export default function CredentialsUpload() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
     const [uploadingCredential, setUploadingCredential] = useState<boolean>(false);
     const [opened, { open, close }] = useDisclosure(false);
+    const [visible, { toggle }] = useDisclosure(false);
 
-    const [refreshData,setRefreshData] = useAtom(refeshDataAtom);
+
+    const [refreshData, setRefreshData] = useAtom(refeshDataAtom);
 
 
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
@@ -28,7 +30,7 @@ export default function CredentialsUpload() {
         console.log(_website, _usernameEmail, _password);
         if (_website && _usernameEmail && _password) {
             uploadCredentialsOnSmartContract(_website, _usernameEmail, _password);
-        } 
+        }
     }
 
 
@@ -40,7 +42,7 @@ export default function CredentialsUpload() {
             const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website, usernameOrEmailOrPhone: usernameEmail, password });
             const addedfile = await _addCredentialOfUser.wait()
             console.log(addedfile);
-            setRefreshData({...refreshData,credentialsStatus:!refreshData.credentialsStatus,})
+            setRefreshData({ ...refreshData, credentialsStatus: !refreshData.credentialsStatus, })
 
         } catch (error: any) {
             console.log(error);
@@ -58,39 +60,41 @@ export default function CredentialsUpload() {
             </Modal>
             <h1>Upload Credentials</h1>
 
-                <form onSubmit={handleFormFile} style={{ width: "22rem" }}>
+            <form onSubmit={handleFormFile} style={{ width: "22rem" }}>
 
-                    <TextInput
-                        withAsterisk
-                        disabled={uploadingCredential} placeholder='website' id='website' name='website'
-                        type='text'
-                        label="Enter your website url"
-                        required
-                    />
-                    <TextInput
-                        withAsterisk
-                        disabled={uploadingCredential} placeholder='email or username or phone' id='emailMore' name='emailMore'
-                        type='text'
-                        label="Enter your Email/Phone/Username"
-                        required
-                    />
+                <TextInput
+                    withAsterisk
+                    disabled={uploadingCredential} placeholder='website' id='website' name='website'
+                    type='text'
+                    label="Enter your website url"
+                    required
+                />
+                <TextInput
+                    withAsterisk
+                    disabled={uploadingCredential} placeholder='email or username or phone' id='emailMore' name='emailMore'
+                    type='text'
+                    label="Enter your Email/Phone/Username"
+                    required
+                />
 
-                    <TextInput
-                        withAsterisk
-                        required
-                        disabled={uploadingCredential} placeholder='password' id='password' name='password'
-                        type='password'
-                        label="Enter your password"
-                    />
 
-                    <Button fullWidth mt="lg" leftIcon={<IconDatabase />} disabled={!web3ConnectionData.connected} loading={uploadingCredential} type='submit' variant="outline" >
-                        Upload Credentials
-                    </Button>
+                <PasswordInput
+                    visible={visible}
+                    onVisibilityChange={toggle}
+                    withAsterisk
+                    required
+                    disabled={uploadingCredential} placeholder='password' id='password' name='password'
+                    label="Enter your password afdsfasdf"
+                />
 
-                    {!web3ConnectionData.connected &&
-                        <p>Please connect wallet first</p>
-                    }
-                </form>
+                <Button fullWidth mt="lg" leftIcon={<IconDatabase />} disabled={!web3ConnectionData.connected} loading={uploadingCredential} type='submit' variant="outline" >
+                    Upload Credentials
+                </Button>
+
+                {!web3ConnectionData.connected &&
+                    <p>Please connect wallet first</p>
+                }
+            </form>
         </>
     )
 }
