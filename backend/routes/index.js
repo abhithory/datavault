@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { SpheronClient, ProtocolEnum } from "@spheron/storage";
+import sigUtil from '@metamask/eth-sig-util'
+
 const router = Router();
 
 import multer from "multer"
@@ -76,5 +78,32 @@ router.post("/uploadFileToIPFS", upload.single("userfile"), async (req, res) => 
     }
 
 })
+
+
+router.get("/encryptMessage", async (req, res) => {
+    const {msg, publicencryptkey} = req.headers;
+    console.log('====================================');
+    console.log( publicencryptkey);
+    console.log( msg);
+    console.log('====================================');
+    try {
+        const encryptedObj = sigUtil.encrypt({
+            publicKey: publicencryptkey,
+            data: msg,
+            version: 'x25519-xsalsa20-poly1305'
+        })
+        const encryptedText = Buffer.from(JSON.stringify(encryptedObj), "utf8").toString("hex");
+        return res.status(200).json({
+            encryptedText,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({
+            message: error.message
+        });
+    }
+
+
+});
 
 export default router;
