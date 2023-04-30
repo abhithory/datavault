@@ -10,6 +10,7 @@ import { IconDatabase } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { FileUploadProcessModel } from './FileUploadProcessModel';
 import { refeshDataAtom } from '../../atoms/refreshData';
+import { getFileUploadToken } from '../../helper/ApiCalls';
 
 export default function FileUpload() {
 
@@ -50,9 +51,7 @@ export default function FileUpload() {
 
         try {
             const _file: File | FileType = { ...fileUploaded, name: _nospaceNameFile };
-            const response = await fetch(`http://localhost:8000/api/v1/getuploadtoken`);
-            const resJson = await response.json();
-            const token = resJson.uploadToken;
+            const token = await getFileUploadToken();
             let currentlyUploaded = 0;
             const uploadResult = await upload([_file as File], {
                 token, onChunkUploaded: (uploadedSize, totalSize) => {

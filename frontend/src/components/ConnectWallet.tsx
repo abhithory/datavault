@@ -15,10 +15,8 @@ export default function ConnectWallet() {
     async function connectToWallet() {
         if (window.ethereum) {
             const provider:Web3Provider = getWeb3Provider();
-            // @ts-ignore: Unreachable code error
             const accounts = await provider.send("eth_requestAccounts", []);
-            setWeb3ConnectionData({connected:true,walletAddress:accounts[0]});
-
+            setWeb3ConnectionData({...web3ConnectionData,connected:true,walletAddress:accounts[0]});
             // console.log(accounts);
             // const { name, chainId } = await provider.getNetwork();
             // console.log(name, chainId);

@@ -9,11 +9,14 @@ import { IconDatabase } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { CredentialsUploadProcessModel } from './CredentialsUploadProcessModel';
 import { refeshDataAtom } from '../../atoms/refreshData';
+import { getEncryptionPublicKey } from '../../helper/Utils';
+import { getEncryptedMsg } from '../../helper/ApiCalls';
 
 
 export default function CredentialsUpload() {
-    const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
+    const [web3ConnectionData, setWeb3ConnectionData] = useAtom(web3ConnectionAtom);
     const [uploadingCredential, setUploadingCredential] = useState<boolean>(false);
+    const [uploadingProcessCount, setUploadingProcessCount] = useState<number>(0)
     const [opened, { open, close }] = useDisclosure(false);
     const [visible, { toggle }] = useDisclosure(false);
 
@@ -23,11 +26,11 @@ export default function CredentialsUpload() {
 
     async function handleFormFile(e: React.ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
+        open()
+
         const _website: string = e.target.website.value;
         const _usernameEmail: string = e.target.emailMore.value;
         const _password: string = e.target.password.value;
-
-        console.log(_website, _usernameEmail, _password);
         if (_website && _usernameEmail && _password) {
             uploadCredentialsOnSmartContract(_website, _usernameEmail, _password);
         }
@@ -38,10 +41,20 @@ export default function CredentialsUpload() {
         setUploadingCredential(true);
         open()
         try {
+            setUploadingProcessCount(0)
+            const _pEK: string = web3ConnectionData.encryptionPublicKey.length > 0 ? web3ConnectionData.encryptionPublicKey : await getEncryptionPublicKey(web3ConnectionData.walletAddress);
+            setWeb3ConnectionData({ ...web3ConnectionData, encryptionPublicKey: _pEK })
+            
+            const _eW = await getEncryptedMsg(website, _pEK);
+            const _eU = await getEncryptedMsg(usernameEmail, _pEK);
+            const _eP = await getEncryptedMsg(password, _pEK);
+            setUploadingProcessCount(1)
+            
             const dataVault: Contract = getDataVaultContract();
-            const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website, usernameOrEmailOrPhone: usernameEmail, password });
+            const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website:_eW, usernameOrEmailOrPhone: _eU, password:_eP });
+            setUploadingProcessCount(2)
             const addedfile = await _addCredentialOfUser.wait()
-            console.log(addedfile);
+            setUploadingProcessCount(3)
             setRefreshData({ ...refreshData, credentialsStatus: !refreshData.credentialsStatus, })
 
         } catch (error: any) {
@@ -56,7 +69,7 @@ export default function CredentialsUpload() {
     return (
         <>
             <Modal size="xl" ta="center" opened={opened} onClose={close} title="Uploading Process" centered>
-                <CredentialsUploadProcessModel />
+                <CredentialsUploadProcessModel uploadingProcessCount={uploadingProcessCount} />
             </Modal>
             <h1>Upload Credentials</h1>
 

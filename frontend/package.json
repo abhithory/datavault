@@ -16,9 +16,11 @@
     "@types/node": "^16.18.24",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "crypto-js": "^4.1.1",
     "ethers": "^5.7.2",
     "jotai": "^2.0.4",
     "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
@@ -48,5 +50,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "browserify": "^17.0.0",
+    "process": "^0.11.10"
   }
 }
