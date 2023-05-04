@@ -10,7 +10,7 @@ export default function FilePage() {
       <div className="uploadContainer">
         <FileUpload />
       </div>
-      <div className="allFilesContainer">
+      <div className="alltemsContainer">
         <AllFiles />
       </div>
     </div>

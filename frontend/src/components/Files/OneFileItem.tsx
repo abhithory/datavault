@@ -30,7 +30,7 @@ export default function OneFileItem(file: OneFileInterface) {
         </Button>
       </a>
         :
-          <Button onClick={()=>file.DecryptFile(file.index)} variant="light" color="red" fullWidth mt="md" radius="md">
+          <Button onClick={()=>file.DecryptFile(file.index)} variant="light" color="indigo" fullWidth mt="md" radius="md">
             Encrypt File
           </Button>        
       }

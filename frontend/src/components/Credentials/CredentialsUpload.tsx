@@ -45,13 +45,14 @@ export default function CredentialsUpload() {
             const _pEK: string = web3ConnectionData.encryptionPublicKey.length > 0 ? web3ConnectionData.encryptionPublicKey : await getEncryptionPublicKey(web3ConnectionData.walletAddress);
             setWeb3ConnectionData({ ...web3ConnectionData, encryptionPublicKey: _pEK })
             
-            const _eW = await getEncryptedMsg(website, _pEK);
-            const _eU = await getEncryptedMsg(usernameEmail, _pEK);
+            // const _eW = await getEncryptedMsg(website, _pEK);
+            // const _eU = await getEncryptedMsg(usernameEmail, _pEK);
             const _eP = await getEncryptedMsg(password, _pEK);
             setUploadingProcessCount(1)
             
             const dataVault: Contract = getDataVaultContract();
-            const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website:_eW, usernameOrEmailOrPhone: _eU, password:_eP });
+            // const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website:_eW, usernameOrEmailOrPhone: _eU, password:_eP });
+            const _addCredentialOfUser = await dataVault.addCredentialOfUser({ website, usernameOrEmailOrPhone:usernameEmail, password:_eP });
             setUploadingProcessCount(2)
             const addedfile = await _addCredentialOfUser.wait()
             setUploadingProcessCount(3)
@@ -97,7 +98,7 @@ export default function CredentialsUpload() {
                     withAsterisk
                     required
                     disabled={uploadingCredential} placeholder='password' id='password' name='password'
-                    label="Enter your password afdsfasdf"
+                    label="Enter your password"
                 />
 
                 <Button fullWidth mt="lg" leftIcon={<IconDatabase />} disabled={!web3ConnectionData.connected} loading={uploadingCredential} type='submit' variant="outline" >

@@ -16,10 +16,11 @@ export interface CredentialInterface{
     password:string,
 }
 
-export interface CredentialWithFunctionInterface{
-    index:number,
+export interface ExtendedCredentialInterface{
     website:string,
     usernameOrEmailOrPhone:string,
     password:string,
-    openCredentialModel:(n:number)=>void
+    decryptedStatus:boolean
+
 }
+

@@ -8,7 +8,7 @@ export default function CredentialsPage() {
       <div className="uploadContainer">
         <CredentialsUpload />
       </div>
-      <div>
+      <div className='alltemsContainer'>
         <AllCredentials />
       </div>
     </div>

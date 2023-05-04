@@ -50,8 +50,6 @@ export default function AllFiles() {
         } catch (error) {
             
         }
-        
-        
     }
     return (
         <div>
@@ -61,7 +59,8 @@ export default function AllFiles() {
                 {isLoading ?
                     <Loader />
                     :
-                    allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} index={key} fileName={file.fileName} fileHash={file.fileHash} decryptedStatus={file.decryptedStatus} DecryptFile={DecryptFile}  />) : <h1>You Haven't uploaded any file yet</h1>
+                    (allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} index={key} fileName={file.fileName} fileHash={file.fileHash} decryptedStatus={file.decryptedStatus} DecryptFile={DecryptFile}  />) : 
+                    <h1>You Haven't uploaded any file yet</h1>)
                 }
             </div>
         </div>

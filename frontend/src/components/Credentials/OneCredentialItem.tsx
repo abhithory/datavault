@@ -1,9 +1,19 @@
 import React from 'react'
-import { CredentialInterface, CredentialWithFunctionInterface } from '../../helper/Interfaces'
+import { CredentialInterface } from '../../helper/Interfaces'
 
 import { Card, Image, Text, Badge, Button, Group, Chip } from '@mantine/core';
 import { IconPassword } from '@tabler/icons-react';
 
+
+interface CredentialWithFunctionInterface{
+  index:number,
+  website:string,
+  usernameOrEmailOrPhone:string,
+  password:string,
+  decryptedStatus:boolean,
+  openCredentialModel:(n:number)=>void,
+  DecryptCredentials:(n:number)=>void
+}
 
 export default function OneCredentialItem(credential: CredentialWithFunctionInterface) {
   return (
@@ -24,10 +34,15 @@ export default function OneCredentialItem(credential: CredentialWithFunctionInte
       <Group position="center" mt="xs">
         <Text weight={500}>{credential.password}</Text>
       </Group> */}
-
+      {credential.decryptedStatus?
       <Button onClick={()=>credential.openCredentialModel(credential.index)} variant="light" className='textWhite' fullWidth mt="md" radius="md">
-        Show Credentials
+      Show Credentials
+    </Button>
+      :
+      <Button onClick={()=>credential.DecryptCredentials(credential.index)} variant="light" color="indigo" fullWidth mt="md" radius="md">
+        Decrypt Credentials
       </Button>
+      }
     </Card>
   )
 }
