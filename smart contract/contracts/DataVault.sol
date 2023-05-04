@@ -6,8 +6,10 @@ pragma solidity ^0.8.9;
 contract DataVault {
     // structure of file data
     struct FileStruct {
+        bool advanceEncryptionStatus;
         string fileName;
         string fileHash;
+        string decryptKey;
     }
 
     // structure of Credential data
