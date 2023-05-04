@@ -1,4 +1,6 @@
 import CryptoJS from "crypto-js"
+import JSZip from "jszip"
+
 
 export async function getEncryptionPublicKey(publicWalletAdr:string): Promise<string> {
         const _key: string = await (window.ethereum as any).request({
@@ -23,8 +25,9 @@ function generateRandomKey(): string {
 
 
 // For Encrypting & Decrypting file 
+export async function advanceEncryptFile(file: Blob):Promise<{key:string,encryptedFile:Blob}> {
+    const zipedFile = await zipFile([file as File], (file as File).name) as Blob
 
-export function encryptFile(file: Blob) {
     return new Promise((resolve, error) => {
         const reader = new FileReader()
         reader.onload = () => {
@@ -32,11 +35,11 @@ export function encryptFile(file: Blob) {
             const _wArray = CryptoJS.lib.WordArray.create(reader.result as any);
             const encryptedFile = CryptoJS.AES.encrypt(_wArray, key).toString();
             resolve({
-                key,
-                encryptedFile
+                key:key,
+                encryptedFile: new Blob([encryptedFile])
             })
         }
-        reader.readAsArrayBuffer(file);
+        reader.readAsArrayBuffer(zipedFile);
     })
 }
 
@@ -66,3 +69,14 @@ export function decryptFile(data: Blob, key: string): Promise<Blob> {
         reader.readAsText(data)
     })
 }
+
+  
+export function zipFile(files: File[],folderName: string) {
+    if (files.length === 0 || folderName === "") return false
+    const zip = new JSZip()
+    const folder = zip.folder(folderName)!
+    files.forEach(file => {
+      folder.file(folderName, file as any)
+    })
+    return zip.generateAsync({ type: "blob" })
+  }

@@ -5,13 +5,16 @@ import { Contract } from 'ethers';
 import { web3ConnectionAtom } from '../../atoms/web3Connection';
 import { useAtom } from 'jotai';
 import { FileInput } from './FileInput';
-import { Modal, Group, Box, Button, LoadingOverlay, TextInput, Badge } from '@mantine/core';
-import { IconDatabase } from '@tabler/icons-react';
+import { Modal, Group, Box, Button, LoadingOverlay, TextInput, Badge, Switch } from '@mantine/core';
+import { IconCheck, IconDatabase, IconX } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { FileUploadProcessModel } from './FileUploadProcessModel';
 import { refeshDataAtom } from '../../atoms/refreshData';
 import { getEncryptedMsg, getFileUploadToken } from '../../helper/ApiCalls';
-import { getEncryptionPublicKey } from '../../helper/Utils';
+import { decryptFile, advanceEncryptFile, getEncryptionPublicKey, zipFile } from '../../helper/Utils';
+
+import saveAs from "file-saver"
+
 
 export default function FileUpload() {
 
@@ -21,6 +24,7 @@ export default function FileUpload() {
     const [refreshData, setRefreshData] = useAtom(refeshDataAtom);
     const [fileName, setFileName] = useState<string>("")
     const [uploadingProcessCount, setUploadingProcessCount] = useState<number>(0)
+    const [checkedAdvanceEncryption, setCheckedAdvanceEncryption] = useState(false);
 
 
     interface FileType {
@@ -41,6 +45,17 @@ export default function FileUpload() {
     });
 
 
+    async function uploadFileOnIPFS(file: Blob) {
+        const token = await getFileUploadToken();
+        let currentlyUploaded = 0;
+        return await upload([file as File], {
+            token, onChunkUploaded: (uploadedSize, totalSize) => {
+                currentlyUploaded += uploadedSize;
+                // console.log(`Uploaded ${currentlyUploaded} of ${totalSize} Bytes.`);
+            },
+        });
+    }
+
     async function handleUploadFile() {
         if (!fileUploaded) return
         open()
@@ -50,23 +65,28 @@ export default function FileUpload() {
         // setFileName(_nospaceNameFile);
         try {
             setUploadingProcessCount(0)
-            const _file: File | FileType = fileUploaded;
-            // const _file: File | FileType = { ...fileUploaded, name: _nospaceNameFile };
-            const token = await getFileUploadToken();
-            let currentlyUploaded = 0;
-            const uploadResult = await upload([_file as File], {
-                token, onChunkUploaded: (uploadedSize, totalSize) => {
-                    currentlyUploaded += uploadedSize;
-                    // console.log(`Uploaded ${currentlyUploaded} of ${totalSize} Bytes.`);
-                },
-            });
+            let _file: File | FileType = fileUploaded;
+            let fileIPFSHash: string;
+            let decryptKey: string;
+            let advanceEncryptionStatus: boolean = checkedAdvanceEncryption;
             
-            setUploadingProcessCount(1)
             const _pEK: string = web3ConnectionData.encryptionPublicKey.length > 0 ? web3ConnectionData.encryptionPublicKey : await getEncryptionPublicKey(web3ConnectionData.walletAddress);
             setWeb3ConnectionData({ ...web3ConnectionData, encryptionPublicKey: _pEK })
-            const _encrypteLink = await getEncryptedMsg(uploadResult.protocolLink, _pEK);
+         
+            if (advanceEncryptionStatus) {
+                const { key, encryptedFile } = await advanceEncryptFile(_file as Blob);
+                const uploadResult = await uploadFileOnIPFS(encryptedFile as Blob);
+                setUploadingProcessCount(1)  
+                decryptKey = await getEncryptedMsg(key, _pEK);;
+                fileIPFSHash = uploadResult.protocolLink;
+            } else {
+                const uploadResult = await uploadFileOnIPFS(_file as Blob);
+                decryptKey = "";
+                setUploadingProcessCount(1)  
+                fileIPFSHash = await getEncryptedMsg(uploadResult.protocolLink, _pEK);;
+            }
             setUploadingProcessCount(2)
-            await uploadFileOnSmartContract(fileName, _encrypteLink);
+            await uploadFileOnSmartContract(advanceEncryptionStatus,fileName, fileIPFSHash,decryptKey);
 
         } catch (error) {
             console.log(error);
@@ -83,7 +103,7 @@ export default function FileUpload() {
     }
 
 
-    async function uploadFileOnSmartContract(_name: string, _hash: string) {
+    async function uploadFileOnSmartContract(advanceEncryptionStatus:boolean,_name: string, _hash: string,decryptKey:string) {
 
         try {
             const dataVault: Contract = getDataVaultContract();
@@ -105,6 +125,9 @@ export default function FileUpload() {
         let _file: File | null = e.target.files && e.target.files[0]
         setFileUploaded(_file)
         setFileName(_file?.name?.split(".").slice(0, -1).join(".") as string);
+
+        // encriptDecrypt(_file as File);
+
         // let reader = new FileReader();
         // reader.onloadend = () => {
         //   console.log("url",reader.result);          
@@ -114,6 +137,14 @@ export default function FileUpload() {
         // name, size, type
     }
 
+    // async function encriptDecrypt(_file: File) {
+
+
+
+    //     // decrypt file and download file
+    //     const decryptedFile = await decryptFile(encryptedFile, key);
+    //     saveAs(decryptedFile, "newfile.zip")
+    // }
 
     function convertInMb(inByte: number): string {
         return (inByte / 1000).toFixed(3) + " KB"
@@ -129,7 +160,29 @@ export default function FileUpload() {
 
             <h1>Upload file</h1>
 
-            {/* // TODO: file upload process */}
+            <Group position="center">
+                <Switch
+                    checked={checkedAdvanceEncryption}
+                    onChange={(event) => setCheckedAdvanceEncryption(event.currentTarget.checked)}
+                    color="customPrimary"
+                    size="md"
+                    label="Advance Encryption"
+                    thumbIcon={
+                        checkedAdvanceEncryption ? (
+                            <IconCheck size="0.8rem" color="indigo" stroke={3} />
+                        ) : (
+                            <IconX size="0.8rem" color="black" stroke={3} />
+                        )
+                    }
+                />
+            </Group>
+            <div>
+                {checkedAdvanceEncryption ?
+                    <p>Encrypt the file and hash both</p>
+                    :
+                    <p>Encrypt the hash only</p>
+                }
+            </div>
 
             <FileInput handleFileUpload={handleFileUpload} />
             {fileUploaded && fileUploaded?.size > 0 &&

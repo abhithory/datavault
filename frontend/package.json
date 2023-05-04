@@ -18,7 +18,9 @@
     "@types/react-dom": "^18.2.0",
     "crypto-js": "^4.1.1",
     "ethers": "^5.7.2",
+    "file-saver": "^2.0.5",
     "jotai": "^2.0.4",
+    "jszip": "^3.10.1",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
@@ -53,6 +55,7 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
+    "@types/file-saver": "^2.0.5",
     "browserify": "^17.0.0",
     "process": "^0.11.10"
   }
