@@ -14,6 +14,7 @@ import { getEncryptedMsg, getFileUploadToken } from '../../helper/ApiCalls';
 import { decryptFile, advanceEncryptFile, getEncryptionPublicKey, zipFile } from '../../helper/Utils';
 
 import saveAs from "file-saver"
+import cloneDeep from 'lodash/cloneDeep';
 
 
 export default function FileUpload() {
@@ -45,10 +46,13 @@ export default function FileUpload() {
     });
 
 
-    async function uploadFileOnIPFS(file: Blob) {
+    async function uploadFileOnIPFS(file: File,fileName:string) {
         const token = await getFileUploadToken();
+        const _file = new File([file], fileName);
+        console.log(fileName);
+                
         let currentlyUploaded = 0;
-        return await upload([file as File], {
+        return await upload([_file], {
             token, onChunkUploaded: (uploadedSize, totalSize) => {
                 currentlyUploaded += uploadedSize;
                 // console.log(`Uploaded ${currentlyUploaded} of ${totalSize} Bytes.`);
@@ -60,12 +64,10 @@ export default function FileUpload() {
         if (!fileUploaded) return
         open()
         setUploadingFile(true)
-
-        // const _nospaceNameFile = fileName.replaceAll(" ", "-") + "." + fileUploaded.name.split(".").at(-1);
-        // setFileName(_nospaceNameFile);
         try {
             setUploadingProcessCount(0)
             let _file: File | FileType = fileUploaded;
+            let fileUploadName:string = fileName + "." + _file.name.split(".").at(-1);
             let fileIPFSHash: string;
             let decryptKey: string;
             let advanceEncryptionStatus: boolean = checkedAdvanceEncryption;
@@ -75,18 +77,19 @@ export default function FileUpload() {
          
             if (advanceEncryptionStatus) {
                 const { key, encryptedFile } = await advanceEncryptFile(_file as Blob);
-                const uploadResult = await uploadFileOnIPFS(encryptedFile as Blob);
-                setUploadingProcessCount(1)  
+                const uploadResult = await uploadFileOnIPFS(encryptedFile as File,fileUploadName);
+                setUploadingProcessCount(1);
                 decryptKey = await getEncryptedMsg(key, _pEK);;
                 fileIPFSHash = uploadResult.protocolLink;
             } else {
-                const uploadResult = await uploadFileOnIPFS(_file as Blob);
+                const uploadResult = await uploadFileOnIPFS(_file as File,fileUploadName);
                 decryptKey = "";
-                setUploadingProcessCount(1)  
+                setUploadingProcessCount(1);
+                console.log(uploadResult.protocolLink);
                 fileIPFSHash = await getEncryptedMsg(uploadResult.protocolLink, _pEK);;
             }
             setUploadingProcessCount(2)
-            await uploadFileOnSmartContract(advanceEncryptionStatus,fileName, fileIPFSHash,decryptKey);
+            await uploadFileOnSmartContract(advanceEncryptionStatus,fileUploadName, fileIPFSHash,decryptKey);
 
         } catch (error) {
             console.log(error);
