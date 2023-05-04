@@ -14,7 +14,7 @@ const config: HardhatUserConfig = {
     local:{
       url: "HTTP://127.0.0.1:7545",
       "chainId":1337,
-      accounts: ["ddda13a3964b9f9ebe4dff462e137519ef1f4b2914032a23e389db7e452e650e"]
+      accounts: ["3cc98460e522d56a1ad883c9b9413a341f294e5eaad4061056f7bb8fb8f03231"]
   }
   }
 };

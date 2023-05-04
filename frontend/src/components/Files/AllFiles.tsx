@@ -6,7 +6,9 @@ import { ExtendedFileInterface, FileInterface } from '../../helper/Interfaces';
 import OneFileItem from './OneFileItem';
 import { Loader } from '@mantine/core';
 import { refeshDataAtom } from '../../atoms/refreshData';
-import { decryptMessage } from '../../helper/Utils';
+import { decryptFile, decryptMessage } from '../../helper/Utils';
+import saveAs from "file-saver"
+
 
 export default function AllFiles() {
     const [web3ConnectionData,] = useAtom(web3ConnectionAtom);
@@ -19,17 +21,19 @@ export default function AllFiles() {
         if (web3ConnectionData.connected) {
             loadAllFiles();
         }
-    }, [web3ConnectionData || refreshData.fileStatus])
+    }, [refreshData.fileStatus || web3ConnectionData])
 
 
     async function loadAllFiles() {
         setIsLoading(true)
         try {
             const dataVault = getDataVaultContract();
-            const allFiles:FileInterface[] = await dataVault.getAllFilesOfUser();
-            const extendedFiles:ExtendedFileInterface[] = allFiles.map(((item:FileInterface)=>{
-                return {...item,decryptedStatus:false}
+            const allFiles: FileInterface[] = await dataVault.getAllFilesOfUser();
+            const extendedFiles: ExtendedFileInterface[] = allFiles.map(((item: FileInterface) => {
+                return { ...item, decryptedStatus: false }
             }))
+            console.log(extendedFiles);
+
             setAllFiles(extendedFiles);
         } catch (error: any) {
             console.log("error", error?.message);
@@ -38,17 +42,43 @@ export default function AllFiles() {
         }
     }
 
-    async function DecryptFile(n:number) {
-        try {            
-            const _decryptedMsg = await decryptMessage(allFiles[n].fileHash,web3ConnectionData.walletAddress);
-            setAllFiles(allFiles.map((file:ExtendedFileInterface,i:number)=>{
-                if (i === n) {
-                    return {...file,fileHash:_decryptedMsg,decryptedStatus:true}
-                }
-                return file
-            }))
+    async function DecryptFile(n: number) {
+        try {
+            if (allFiles[n].advanceEncryptionStatus) {
+                console.log(allFiles[n].decryptKey);
+                const _decryptedMsg = await decryptMessage(allFiles[n].decryptKey, web3ConnectionData.walletAddress);
+                console.log(_decryptedMsg);
+
+                setAllFiles(allFiles.map((file: ExtendedFileInterface, i: number) => {
+                    if (i === n) {
+                        return { ...file, decryptKey: _decryptedMsg, decryptedStatus: true }
+                    }
+                    return file
+                }))
+            } else {
+                const _decryptedMsg = await decryptMessage(allFiles[n].fileHash, web3ConnectionData.walletAddress);
+                setAllFiles(allFiles.map((file: ExtendedFileInterface, i: number) => {
+                    if (i === n) {
+                        return { ...file, fileHash: _decryptedMsg + "/" + file.fileName, decryptedStatus: true }
+                    }
+                    return file
+                }))
+            }
         } catch (error) {
-            
+
+        }
+    }
+
+    async function downloadEncryptedFile(n: number) {
+        try {
+            const _fullLink = allFiles[n].fileHash + "/" + allFiles[n].fileName;
+            const _res = await fetch(_fullLink);
+            const encryptedFile = await _res.blob();
+            const decryptedFile = await decryptFile(encryptedFile, allFiles[n].decryptKey);
+            saveAs(decryptedFile, allFiles[n].fileName+".zip")
+
+        } catch (error) {
+
         }
     }
     return (
@@ -59,8 +89,8 @@ export default function AllFiles() {
                 {isLoading ?
                     <Loader />
                     :
-                    (allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} index={key} fileName={file.fileName} fileHash={file.fileHash} decryptedStatus={file.decryptedStatus} DecryptFile={DecryptFile}  />) : 
-                    <h1>You Haven't uploaded any file yet</h1>)
+                    (allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} index={key} fileName={file.fileName} fileHash={file.fileHash} decryptedStatus={file.decryptedStatus} DecryptFile={DecryptFile} advanceEncryptionStatus={file.advanceEncryptionStatus} downloadEncryptedFile={downloadEncryptedFile} />) :
+                        <h1>You Haven't uploaded any file yet</h1>)
                 }
             </div>
         </div>

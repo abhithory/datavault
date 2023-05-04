@@ -1,12 +1,15 @@
 export interface FileInterface{
+    advanceEncryptionStatus: boolean,
     fileName:string,
     fileHash:string,
-    // decryptedStatus:boolean
+    decryptKey:string
 }
 
 export interface ExtendedFileInterface{
+    advanceEncryptionStatus: boolean,
     fileName:string,
     fileHash:string,
+    decryptKey:string
     decryptedStatus:boolean
 }
 

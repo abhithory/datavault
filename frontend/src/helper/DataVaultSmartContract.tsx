@@ -5,7 +5,7 @@ import { ExternalProvider } from '@ethersproject/providers';
 
 
 
-export const dataVaultContractAddr = "0x19D10491b9C2C9D331D8b8E6714c026681361183";
+export const dataVaultContractAddr = "0x5a0e328149d4963DdAc93E0a0E1784d0De8dB845";
 
 
 export function getWeb3Provider(): Web3Provider {

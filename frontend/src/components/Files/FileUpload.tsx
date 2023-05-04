@@ -13,8 +13,6 @@ import { refeshDataAtom } from '../../atoms/refreshData';
 import { getEncryptedMsg, getFileUploadToken } from '../../helper/ApiCalls';
 import { decryptFile, advanceEncryptFile, getEncryptionPublicKey, zipFile } from '../../helper/Utils';
 
-import saveAs from "file-saver"
-import cloneDeep from 'lodash/cloneDeep';
 
 
 export default function FileUpload() {
@@ -106,16 +104,17 @@ export default function FileUpload() {
     }
 
 
-    async function uploadFileOnSmartContract(advanceEncryptionStatus:boolean,_name: string, _hash: string,decryptKey:string) {
+    async function uploadFileOnSmartContract(advanceEncryptionStatus:boolean,_name: string, fileHash: string,decryptKey:string) {
 
         try {
             const dataVault: Contract = getDataVaultContract();
-            const _addFileOfUser = await dataVault.addFileOfUser({ fileName: _name, fileHash: _hash });
+            const _addFileOfUser = await dataVault.addFileOfUser({ advanceEncryptionStatus,fileName: _name, fileHash, decryptKey});
             setUploadingProcessCount(3)
 
             const addedfile = await _addFileOfUser.wait()
             setUploadingProcessCount(4)
             setRefreshData({ ...refreshData, fileStatus: !refreshData.fileStatus })
+
         } catch (error: any) {
             console.log(error);
             console.log(error?.message);
@@ -139,15 +138,6 @@ export default function FileUpload() {
         // show basic details of file to user
         // name, size, type
     }
-
-    // async function encriptDecrypt(_file: File) {
-
-
-
-    //     // decrypt file and download file
-    //     const decryptedFile = await decryptFile(encryptedFile, key);
-    //     saveAs(decryptedFile, "newfile.zip")
-    // }
 
     function convertInMb(inByte: number): string {
         return (inByte / 1000).toFixed(3) + " KB"
