@@ -1,6 +1,13 @@
 export interface FileInterface{
     fileName:string,
-    fileHash:string
+    fileHash:string,
+    // decryptedStatus:boolean
+}
+
+export interface ExtendedFileInterface{
+    fileName:string,
+    fileHash:string,
+    decryptedStatus:boolean
 }
 
 export interface CredentialInterface{

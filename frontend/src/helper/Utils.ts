@@ -8,7 +8,7 @@ export async function getEncryptionPublicKey(publicWalletAdr:string): Promise<st
         return _key
 }
 
-export async function decruptMessage(encryptedMsg: string, publicWalletAdr:string): Promise<string> {
+export async function decryptMessage(encryptedMsg: string, publicWalletAdr:string): Promise<string> {
     const data = await (window.ethereum as any).request({
         method: 'eth_decrypt',
         params: [encryptedMsg, publicWalletAdr],

@@ -16,6 +16,10 @@ export default function ConnectWallet() {
         if (window.ethereum) {
             const provider:Web3Provider = getWeb3Provider();
             const accounts = await provider.send("eth_requestAccounts", []);
+
+            console.log('====================================');
+            console.log("balance: ", await provider.getBalance(accounts[0]));
+            console.log('====================================');
             setWeb3ConnectionData({...web3ConnectionData,connected:true,walletAddress:accounts[0]});
             // console.log(accounts);
             // const { name, chainId } = await provider.getNetwork();
