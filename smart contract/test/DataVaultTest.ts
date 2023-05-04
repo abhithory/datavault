@@ -27,10 +27,10 @@ describe("Lock", function () {
     describe("Validations", function () {
       it("Should add file in array", async function () {
         const { dataVault, owner } = await loadFixture(deployDataVaultFixture);
-        const _addFile = await dataVault.addFileOfUser({ fileName: "_name1", fileHash: "_hash1" });
+        const _addFile = await dataVault.addFileOfUser({ advanceEncryptionStatus:true,fileName: "_name1", fileHash: "_hash1",decryptKey:"_key1" });
         const addedfile = await _addFile.wait();
 
-        const _addFile2 = await dataVault.addFileOfUser({ fileName: "_name2", fileHash: "_hash2" });
+        const _addFile2 = await dataVault.addFileOfUser({advanceEncryptionStatus:false,fileName: "_name2", fileHash: "_hash2",decryptKey:"" });
         const addedfile2 = await _addFile2.wait();
 
         const _allFiles = await dataVault.getAllFilesOfUser();
