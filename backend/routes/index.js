@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { SpheronClient, ProtocolEnum } from "@spheron/storage";
 import sigUtil from '@metamask/eth-sig-util'
-
 const router = Router();
-
 import multer from "multer"
-// const upload = multer({ dest: "uploads/" });
+import { config } from "dotenv";
+config();
+
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // Uploads is the Upload_folder_name
@@ -16,12 +17,8 @@ var storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage: storage })
-// const upload = multer({ dest: os.tmpdir() });
-
-
-const SPHERON_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlLZXkiOiI2ZGM3NGEzNGI2ZGVlMWNiMTVmNGU5OTk0MTA2ZmJkZGY5NzlmYTY3ZmJmMTliY2NkYjRiOWJhZjNjMWU1ZTU4NGRlZjQ5YzgyMmYzNWU4N2Y1ZTMzMzk4NDI2NTU4YmNlMmVhNzQ2MGJmYzQzYTYyYjdjMGE1ZTdmMWNmOGE2NiIsImlhdCI6MTY4MzE4MTUwNCwiaXNzIjoid3d3LnNwaGVyb24ubmV0d29yayJ9.9MNhzz_4iEaTmEY4ghunqc7BkTGHPcLK4deT9LH-0PQ"
 const client = new SpheronClient({
-    token: SPHERON_TOKEN,
+    token: process.env.SPHERON_TOKEN,
 });
 
 router.get("/getuploadtoken", async (req, res) => {
@@ -82,10 +79,6 @@ router.post("/uploadFileToIPFS", upload.single("userfile"), async (req, res) => 
 
 router.get("/encryptMessage", async (req, res) => {
     const {msg, publicencryptkey} = req.headers;
-    console.log('====================================');
-    console.log( publicencryptkey);
-    console.log( msg);
-    console.log('====================================');
     try {
         const encryptedObj = sigUtil.encrypt({
             publicKey: publicencryptkey,
