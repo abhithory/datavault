@@ -75,8 +75,8 @@ export default function FileUpload() {
          
             if (advanceEncryptionStatus) {
                 const { key, encryptedFile } = await advanceEncryptFile(_file as Blob);
-                const uploadResult = await uploadFileOnIPFS(encryptedFile as File,fileUploadName);
                 setUploadingProcessCount(1);
+                const uploadResult = await uploadFileOnIPFS(encryptedFile as File,fileUploadName);
                 decryptKey = await getEncryptedMsg(key, _pEK);;
                 fileIPFSHash = uploadResult.protocolLink;
             } else {
@@ -91,9 +91,10 @@ export default function FileUpload() {
 
         } catch (error) {
             console.log(error);
-
+            
         } finally {
             setUploadingFile(false)
+            close()
         }
         // ------------- for uploading file in backend--------------
         // const formData = new FormData()
@@ -148,7 +149,7 @@ export default function FileUpload() {
         <>
 
             <Modal size="xl" ta="center" opened={opened} onClose={close} title="Uploading Process" centered>
-                <FileUploadProcessModel uploadingProcessCount={uploadingProcessCount} />
+                <FileUploadProcessModel uploadingProcessCount={uploadingProcessCount} checkedAdvanceEncryption={checkedAdvanceEncryption} />
             </Modal>
 
             <h1>Upload file</h1>

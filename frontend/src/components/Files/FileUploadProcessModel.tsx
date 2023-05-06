@@ -4,7 +4,8 @@ import { Stepper, Button, Group } from '@mantine/core';
 
 
 interface uploadingProcess {
-  uploadingProcessCount: number
+  uploadingProcessCount: number,
+  checkedAdvanceEncryption: boolean
 }
 
 
@@ -17,11 +18,17 @@ export function FileUploadProcessModel(props: uploadingProcess) {
     <>
       {/* <Stepper ta="center" active={active} onStepClick={setActive}  breakpoint="md"> */}
       <Stepper ta="center" active={props.uploadingProcessCount} breakpoint="md">
-        <Stepper.Step label="Uploading" description="to IPFS" loading={props.uploadingProcessCount === 0}>
-          We Are Uploading File To IPFS. Please Wait...
+        <Stepper.Step label={props.checkedAdvanceEncryption?"Encrypting":"Uploading"} description={props.checkedAdvanceEncryption?"File":" to IPFS"} loading={props.uploadingProcessCount === 0}>
+        {props.checkedAdvanceEncryption?
+          "We are Encrypting your Your File to make it secure. Please Confirm and wait."
+          :
+          " We Are Uploading your File To IPFS. Please Wait..."}
         </Stepper.Step>
-        <Stepper.Step label="Encriptiong" description="File" loading={props.uploadingProcessCount === 1}>
-          We are encriptioing your Your File Credentials to make it secure. Please Confirm and wait.
+        <Stepper.Step label={!props.checkedAdvanceEncryption?"Encrypting":"Uploading"} description={!props.checkedAdvanceEncryption?"File":" to IPFS"} loading={props.uploadingProcessCount === 1}>
+        {!props.checkedAdvanceEncryption?
+          "We are encriptioing your Your File Credentials to make it secure. Please Confirm and wait."
+          :
+          " We Are Uploading your Encrypted File To IPFS. Please Wait..."}
         </Stepper.Step>
         <Stepper.Step label="Confirm" description="Transaction" loading={props.uploadingProcessCount === 2}>
           Please Confirm the transaction with Wallet.

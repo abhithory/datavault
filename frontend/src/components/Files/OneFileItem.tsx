@@ -9,7 +9,8 @@ interface OneFileInterface {
   decryptedStatus: boolean,
   DecryptFile: (n: number) => void,
   downloadEncryptedFile:(n:number) => void,
-  index: number
+  index: number,
+  isDownloading: boolean
 }
 
 export default function OneFileItem(file: OneFileInterface) {
@@ -34,7 +35,7 @@ export default function OneFileItem(file: OneFileInterface) {
 
       {file.decryptedStatus ?
         (file.advanceEncryptionStatus ?
-          <Button onClick={() => file.downloadEncryptedFile(file.index)} variant="light" className='textWhite' fullWidth mt="md" radius="md">
+          <Button onClick={() => file.downloadEncryptedFile(file.index)} variant="light" className='textWhite' fullWidth mt="md" radius="md" loading={file.isDownloading}>
             Download File
           </Button>
           :
@@ -46,7 +47,7 @@ export default function OneFileItem(file: OneFileInterface) {
         )
         :
         <Button onClick={() => file.DecryptFile(file.index)} variant="light" color="indigo" fullWidth mt="md" radius="md">
-          Encrypt File
+          Decrypt File
         </Button>
       }
     </Card>

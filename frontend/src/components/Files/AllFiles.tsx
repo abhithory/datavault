@@ -16,6 +16,7 @@ export default function AllFiles() {
 
     const [allFiles, setAllFiles] = useState<ExtendedFileInterface[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isDownloading, setIsDownloading] = useState(false);
 
     useEffect(() => {
         if (web3ConnectionData.connected) {
@@ -70,15 +71,18 @@ export default function AllFiles() {
     }
 
     async function downloadEncryptedFile(n: number) {
+        setIsDownloading(true)
         try {
             const _fullLink = allFiles[n].fileHash + "/" + allFiles[n].fileName;
             const _res = await fetch(_fullLink);
             const encryptedFile = await _res.blob();
             const decryptedFile = await decryptFile(encryptedFile, allFiles[n].decryptKey);
             saveAs(decryptedFile, allFiles[n].fileName+".zip")
-
+            
         } catch (error) {
-
+            
+        } finally {
+            setIsDownloading(false)
         }
     }
     return (
@@ -89,7 +93,7 @@ export default function AllFiles() {
                 {isLoading ?
                     <Loader />
                     :
-                    (allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} index={key} fileName={file.fileName} fileHash={file.fileHash} decryptedStatus={file.decryptedStatus} DecryptFile={DecryptFile} advanceEncryptionStatus={file.advanceEncryptionStatus} downloadEncryptedFile={downloadEncryptedFile} />) :
+                    (allFiles.length > 0 ? allFiles.map((file, key) => <OneFileItem key={key} index={key} fileName={file.fileName} fileHash={file.fileHash} decryptedStatus={file.decryptedStatus} DecryptFile={DecryptFile} advanceEncryptionStatus={file.advanceEncryptionStatus} downloadEncryptedFile={downloadEncryptedFile} isDownloading={isDownloading} />) :
                         <h1>You Haven't uploaded any file yet</h1>)
                 }
             </div>

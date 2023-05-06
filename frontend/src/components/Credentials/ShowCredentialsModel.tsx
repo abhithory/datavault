@@ -49,12 +49,14 @@ export default function ShowCredentialsModel(credentialData: CredentialInterface
         type='text'
         label="Your website url"
         value={credentialData.website}
+        onChange={()=>""}
         rightSection={<CopyIcon dataForCopy={credentialData.website}/>}
       />
       <TextInput
         type='text'
         label="Your Email/Phone/Username"
         value={credentialData.usernameOrEmailOrPhone}
+        onChange={()=>""}
         rightSection={<CopyIcon dataForCopy={credentialData.usernameOrEmailOrPhone} />}
       />
 
@@ -62,9 +64,10 @@ export default function ShowCredentialsModel(credentialData: CredentialInterface
         visible={visible}
         onVisibilityChange={toggle}
         label="Your Password"
+        onChange={()=>""}
         value={credentialData.password}
       />
-      <CopyIconBtn dataForCopy={credentialData.usernameOrEmailOrPhone}/>
+      <CopyIconBtn dataForCopy={credentialData.password}/>
     </div>
   )
 }
