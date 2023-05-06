@@ -1,4 +1,4 @@
-export const dataVaultContractAddr:string = "0x948A0C8B7652854061892b9cB56A9DF52a8501ec";
+export const dataVaultContractAddr:string = "0x12724A8d0573D6d66aFc122AB6da2A0C1a85437b";
 export const networkChainId:number = 8082;
 export const networkName:string = "Shardeum Sphinx 1.X";
 export const currencySymbol:string = "SHM";
