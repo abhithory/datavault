@@ -1,6 +1,6 @@
+import { backendBaseUrl } from "../consts/NetworkDetails";
 import { getEncryptionPublicKey } from "./Utils";
 
-const backendBaseUrl = "http://localhost:8000/api/v1";
 
 export async function getFileUploadToken(): Promise<string> {
     const response = await fetch(`${backendBaseUrl}/getuploadtoken`);

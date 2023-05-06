@@ -113,6 +113,7 @@ export default function FileUpload() {
             setRefreshData({ ...refreshData, fileStatus: !refreshData.fileStatus })
 
         } catch (error: any) {
+            console.log(error);
             console.log(error?.message);
 
         }

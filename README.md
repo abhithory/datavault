@@ -2,6 +2,13 @@
 
 DataVault is a decentralized application (Dapp) that allows users to store their passwords and files securely and privately on the blockchain. It uses encryption to protect user data and stores the encrypted information on the blockchain, ensuring that only the user with the private key can access it.
 
+
+
+## Deployment Details
+
+- Smart contract on Shardeum Sphinx 1.X - [0x2c2215B1fc08C3cf55309827ADd21125598A3d8e](https://explorer-sphinx.shardeum.org/account/0x2c2215b1fc08c3cf55309827add21125598a3d8e)
+- Frontend on Filecoin using Sphreon -  []
+
 ## Features
 
 - Secure storage of passwords and files on the blockchain
@@ -9,6 +16,20 @@ DataVault is a decentralized application (Dapp) that allows users to store their
 - Simple and advanced file encryption options
 - User-friendly interface for easy management of data
 - Ability to connect with Metamask wallet
+
+## Acknowledgments
+
+This project was built using the following technologies:
+
+- Solidity
+- React.js
+- Node.js + Express.js
+- Ether.js
+- Spheron ( IPFS )
+- Hardhat
+
+Special thanks to the creators of these technologies for making it possible to build secure and decentralized applications.
+
 
 ## Getting Started
 
@@ -18,18 +39,6 @@ DataVault is a decentralized application (Dapp) that allows users to store their
 - Metamask browser extension
 
 ### Installation
-
-1. Clone the repository: `git clone https://github.com/<your-username>/datavault.git`
-2. Install dependencies: `npm install`
-3. Start the local development server: `npm start`
-
-### Usage
-
-1. Connect to the Ethereum network using the Metamask browser extension.
-2. Create an account or log in to your existing account.
-3. Upload your passwords or files to the Dapp.
-4. Choose your encryption option (simple or advanced).
-5. Securely store and manage your data on the blockchain.
 
 ## Contributing
 
@@ -43,17 +52,3 @@ Contributions are always welcome! Please follow these steps to contribute:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-This project was built using the following technologies:
-
-- Solidity
-- React.js
-- Node.js + Express.js
-- Ether.js
-- IPFS
-- Hardhat
-
-Special thanks to the creators of these technologies for making it possible to build secure and decentralized applications.
