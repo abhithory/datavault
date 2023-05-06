@@ -16,13 +16,11 @@ app.use(cors());
 
 // Routes
 app.use("/api/v1",Routes);
-
-
-app.get("/", async(req,res) => {
+app.use("/",(req,res) => {
   return res.status(200).json({
-      message:"Backend is working fine"
-  });
-})
+    "message":"working fine"
+});
+});
 
 // Handle 404
 app.use((req, res) => {
