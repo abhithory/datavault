@@ -59,7 +59,6 @@ export default function CredentialsUpload() {
             setRefreshData({ ...refreshData, credentialsStatus: !refreshData.credentialsStatus, })
 
         } catch (error: any) {
-            console.log(error);
             console.log(error?.message);
         } finally {
             setUploadingCredential(false)

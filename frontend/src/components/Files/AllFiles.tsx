@@ -33,7 +33,6 @@ export default function AllFiles() {
             const extendedFiles: ExtendedFileInterface[] = allFiles.map(((item: FileInterface) => {
                 return { ...item, decryptedStatus: false }
             }))
-            console.log(extendedFiles);
 
             setAllFiles(extendedFiles);
         } catch (error: any) {
@@ -46,10 +45,7 @@ export default function AllFiles() {
     async function DecryptFile(n: number) {
         try {
             if (allFiles[n].advanceEncryptionStatus) {
-                console.log(allFiles[n].decryptKey);
                 const _decryptedMsg = await decryptMessage(allFiles[n].decryptKey, web3ConnectionData.walletAddress);
-                console.log(_decryptedMsg);
-
                 setAllFiles(allFiles.map((file: ExtendedFileInterface, i: number) => {
                     if (i === n) {
                         return { ...file, decryptKey: _decryptedMsg, decryptedStatus: true }

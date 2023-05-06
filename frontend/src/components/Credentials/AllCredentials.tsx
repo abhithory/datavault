@@ -46,7 +46,6 @@ export default function AllCredentials() {
     }
 
     function openCredentialModel(n:number){
-        console.log(n);
         setModelIndex(n)
         open()
     }

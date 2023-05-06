@@ -46,14 +46,11 @@ export default function FileUpload() {
 
     async function uploadFileOnIPFS(file: File,fileName:string) {
         const token = await getFileUploadToken();
-        const _file = new File([file], fileName);
-        console.log(fileName);
-                
+        const _file = new File([file], fileName);                
         let currentlyUploaded = 0;
         return await upload([_file], {
             token, onChunkUploaded: (uploadedSize, totalSize) => {
                 currentlyUploaded += uploadedSize;
-                // console.log(`Uploaded ${currentlyUploaded} of ${totalSize} Bytes.`);
             },
         });
     }
@@ -101,7 +98,6 @@ export default function FileUpload() {
         // formData.append('userfile', _file)
         // const responseUpload = await fetch(`http://localhost:8000/api/v1/uploadFileToIPFS`, { method: "POST", body: formData }); // from step 1
         // const dataRes = await responseUpload.json();
-        // console.log(dataRes);
     }
 
 
@@ -117,7 +113,6 @@ export default function FileUpload() {
             setRefreshData({ ...refreshData, fileStatus: !refreshData.fileStatus })
 
         } catch (error: any) {
-            console.log(error);
             console.log(error?.message);
 
         }
