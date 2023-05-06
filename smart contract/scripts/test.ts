@@ -3,12 +3,9 @@ const DataVaultABI = require("../artifacts/contracts/DataVault.sol/DataVault.jso
 const dataVaultContractAddr = "0xf320819f7D6F133835322Eb76488531E4be367E0";
 async function main() {
 
-  console.log("aaaaaaaaa");
   
   const customHttpProvider = new hre.ethers.providers.JsonRpcProvider("https://liberty20.shardeum.org");
-  console.log("aaaaaaaaa");
   const contract = new hre.ethers.Contract(dataVaultContractAddr, DataVaultABI.abi, customHttpProvider);
-  console.log("aaaaaaaaa");
 
   console.log(await contract.getAllFilesOfUser());
 
