@@ -6,8 +6,8 @@ DataVault is a decentralized application (Dapp) that allows users to store their
 
 ## Deployment Details
 
+- Frontend on Filecoin using Sphreon -  [https://bafybeihcabzp6gezn2mb6ly6htps6pdyonwbiurhstxc3fwpjejlv2rooa.ipfs.sphn.link/](https://bafybeihcabzp6gezn2mb6ly6htps6pdyonwbiurhstxc3fwpjejlv2rooa.ipfs.sphn.link/)
 - Smart contract on Shardeum Sphinx 1.X - [0x2c2215B1fc08C3cf55309827ADd21125598A3d8e](https://explorer-sphinx.shardeum.org/account/0x2c2215b1fc08c3cf55309827add21125598a3d8e)
-- Frontend on Filecoin using Sphreon -  []
 
 ## Features
 
@@ -15,7 +15,6 @@ DataVault is a decentralized application (Dapp) that allows users to store their
 - Encryption of user data to protect against unauthorized access
 - Simple and advanced file encryption options
 - User-friendly interface for easy management of data
-- Ability to connect with Metamask wallet
 
 ## Acknowledgments
 
