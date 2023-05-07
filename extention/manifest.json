@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "DataVault",
+    "version": "1.0",
+    "description": "Protecting Your Data on the Blockchain",
+    "action": {
+        "default_icon": "logo128.png",
+        "default_title": "Autofill Credentials",
+        "default_popup": "popup.html"
+      },
+    "icons": {
+        "128": "logo128.png"
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "storage"
+    ],
+    "host_permissions": [
+        "https://*/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
