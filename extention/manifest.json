@@ -12,6 +12,7 @@
         "128": "logo128.png"
     },
     "permissions": [
+        "scripting",
         "activeTab",
         "tabs",
         "storage"

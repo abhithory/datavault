@@ -1,15 +1,17 @@
 
-document.getElementById('getCredentialsBtn').addEventListener('click', function() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        var currentUrl = tabs[0].url;
-        // alert(currentUrl)
-        console.log('==================current website==================');
-        console.log(currentUrl);
-        console.log('====================================');
-        embed(codeToInject);
+document.getElementById('getCredentialsBtn').addEventListener('click', function () {
+    // chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    //     var currentUrl = tabs[0].url;
+    //     // alert(currentUrl)
+    //     console.log('==================current website==================');
+    //     console.log(currentUrl);
+    //     console.log('====================================');
 
-        connectToWallet();
-    });
+    // });
+    console.log('===============clicked=====================');
+    codeToInject();
+    // connectToWallet();
+    console.log('====================================');
 });
 
 
@@ -58,15 +60,16 @@ async function connectToWallet() {
 
 function codeToInject() {
     // Do here whatever your script requires. For example:
-    
     console.log('==============injected code ======================');
-    console.log(window.ethereum);
-    console.log(window);
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.scripting.executeScript(tabs[0].id,
+            {
+                file: "gscript.js",
+            });
+
+    });
+
     console.log('====================================');
 }
 
-function embed(fn) {
-    const script = document.createElement("script");
-    script.text = `(${fn.toString()})();`;
-    document.documentElement.appendChild(script);
-}
