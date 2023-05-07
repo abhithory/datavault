@@ -6,6 +6,7 @@ document.getElementById('getCredentialsBtn').addEventListener('click', function(
         console.log('==================current website==================');
         console.log(currentUrl);
         console.log('====================================');
+        embed(codeToInject);
 
         connectToWallet();
     });
@@ -13,6 +14,10 @@ document.getElementById('getCredentialsBtn').addEventListener('click', function(
 
 
 async function connectToWallet() {
+    console.log('====================================');
+    console.log(window);
+    console.log(window.ethereum);
+    console.log('====================================');
     if (window.ethereum) {
         console.log('====================================');
         console.log("metamask extention detected");
@@ -49,3 +54,19 @@ async function connectToWallet() {
 //     return addresses.length > 0
 // }
 
+
+
+function codeToInject() {
+    // Do here whatever your script requires. For example:
+    
+    console.log('==============injected code ======================');
+    console.log(window.ethereum);
+    console.log(window);
+    console.log('====================================');
+}
+
+function embed(fn) {
+    const script = document.createElement("script");
+    script.text = `(${fn.toString()})();`;
+    document.documentElement.appendChild(script);
+}
