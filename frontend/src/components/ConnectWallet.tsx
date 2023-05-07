@@ -74,7 +74,7 @@ export default function ConnectWallet() {
                 } catch (error) {
                 }
             }
-        } finally{
+        } finally {
             connectToWallet()
         }
 
@@ -86,14 +86,16 @@ export default function ConnectWallet() {
                 {isNetworkWrong ?
                     "Change Network"
                     :
-                    web3ConnectionData.connected ? "Connected" : "Connect wallet"
+                    web3ConnectionData.connected ? "Connected" :
+
+                        (error === "" ?
+                            "Connect wallet"
+                            :
+                            `Error: ${error}`
+                        )
                 }
             </Button>
 
-
-            {error !== "" &&
-                <p>error: {error}</p>
-            }
         </div>
     )
 }
