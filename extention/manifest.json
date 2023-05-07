@@ -17,6 +17,12 @@
         "tabs",
         "storage"
     ],
+    "content_scripts": [
+        {
+          "matches": ["*://*/*"],
+          "js": ["pagecontent.js"]
+        }
+      ],
     "host_permissions": [
         "https://*/*"
     ],
